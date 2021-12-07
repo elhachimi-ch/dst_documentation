@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>chart &mdash; Data Science Toolkit 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Data Science Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Science Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>chart</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for chart</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">from</span> <span class="nn">dataframe</span> <span class="k">import</span> <span class="n">DataFrame</span>
+<span class="kn">import</span> <span class="nn">matplotlib.ticker</span> <span class="k">as</span> <span class="nn">plticker</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<div class="viewcode-block" id="Chart"><a class="viewcode-back" href="../index.html#chart.Chart">[docs]</a><span class="k">class</span> <span class="nc">Chart</span><span class="p">:</span>
+    <span class="n">chart_type_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;line&#39;</span><span class="p">,</span> <span class="s1">&#39;bar&#39;</span><span class="p">,</span> <span class="s1">&#39;box&#39;</span><span class="p">,</span> <span class="s1">&#39;swarm&#39;</span><span class="p">,</span> <span class="s1">&#39;strip_swarm&#39;</span><span class="p">,</span> <span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="s1">&#39;reg&#39;</span><span class="p">,</span> <span class="s1">&#39;dist&#39;</span><span class="p">,</span> <span class="s1">&#39;point&#39;</span><span class="p">,</span> <span class="s1">&#39;pair&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;correlation_map&#39;</span><span class="p">,</span> <span class="s1">&#39;scatter&#39;</span><span class="p">,</span> <span class="s1">&#39;heat_map&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">column4x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">chart_type</span><span class="o">=</span><span class="s1">&#39;pair&#39;</span><span class="p">,</span> <span class="n">group_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">columns_names_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">plotly</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span> <span class="o">=</span> <span class="n">dataframe</span>
+        <span class="k">if</span> <span class="n">column4x</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">column4x</span> <span class="o">=</span> <span class="n">dataframe</span><span class="o">.</span><span class="n">index</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">column4x</span> <span class="o">=</span> <span class="n">column4x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">=</span> <span class="n">chart_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_by</span> <span class="o">=</span> <span class="n">group_by</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">columns_names_list</span> <span class="o">=</span> <span class="n">columns_names_list</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plotly</span> <span class="o">=</span> <span class="n">plotly</span>
+        <span class="c1">#sns.set_theme(style=&quot;darkgrid&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+
+<div class="viewcode-block" id="Chart.add_data_to_show"><a class="viewcode-back" href="../index.html#chart.Chart.add_data_to_show">[docs]</a>    <span class="k">def</span> <span class="nf">add_data_to_show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">column4hover</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">column4size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotly</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">,</span> <span class="n">hover_name</span><span class="o">=</span><span class="n">column4hover</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+                <span class="n">loc</span> <span class="o">=</span> <span class="n">plticker</span><span class="o">.</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span> <span class="c1"># this locator puts ticks at regular intervals</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+                <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+                <span class="n">sns</span><span class="o">.</span><span class="n">swarmplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span>
+                <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span>
+                <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span>
+                <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">7</span><span class="p">]:</span>
+                <span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="o">.</span><span class="n">column</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">8</span><span class="p">]:</span>
+                <span class="n">sns</span><span class="o">.</span><span class="n">pointplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;survived&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;male&quot;</span><span class="p">:</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;female&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">},</span>
+                            <span class="n">markers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;^&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">],</span> <span class="n">linestyles</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">],</span> <span class="n">capsize</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">9</span><span class="p">]:</span>
+                <span class="n">dataframe</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">()</span>
+                <span class="n">dataframe</span><span class="o">.</span><span class="n">set_data_frame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="n">dataframe</span><span class="o">.</span><span class="n">get_columns_names</span><span class="p">(),</span>
+                    <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">10</span><span class="p">]:</span>
+                <span class="n">sns</span><span class="o">.</span><span class="n">clustermap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="o">.</span><span class="n">corr</span><span class="p">(),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">diverging_palette</span><span class="p">(</span><span class="mi">230</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">as_cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;1%&#39;</span><span class="p">,</span>
+                            <span class="n">center</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">11</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">column4size</span><span class="p">,</span> <span class="n">hover_name</span><span class="o">=</span><span class="n">column4hover</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">lineplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">markers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+                <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">boxplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">swarmplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">4</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">5</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">6</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">regplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">column4x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">data_column</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">7</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="o">.</span><span class="n">column</span><span class="p">,</span> <span class="n">kde</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">8</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">pointplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s2">&quot;class&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;survived&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;male&quot;</span><span class="p">:</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;female&quot;</span><span class="p">:</span> <span class="s2">&quot;m&quot;</span><span class="p">},</span>
+                            <span class="n">markers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;^&quot;</span><span class="p">,</span> <span class="s2">&quot;o&quot;</span><span class="p">],</span> <span class="n">linestyles</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;--&quot;</span><span class="p">],</span> <span class="n">capsize</span><span class="o">=.</span><span class="mi">2</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">9</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">,</span> <span class="nb">vars</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">columns_names_list</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">10</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">clustermap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="o">.</span><span class="n">corr</span><span class="p">(),</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">chart_type_list</span><span class="p">[</span><span class="mi">12</span><span class="p">]:</span>
+                <span class="c1"># Compute the correlation matrix</span>
+                <span class="n">corr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="o">.</span><span class="n">corr</span><span class="p">()</span>
+                <span class="c1"># Generate a mask for the upper triangle</span>
+                <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">bool</span><span class="p">))</span>
+                <span class="c1"># Generate a custom diverging colormap</span>
+                <span class="n">cmap</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">diverging_palette</span><span class="p">(</span><span class="mi">230</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">as_cmap</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                <span class="c1"># Draw the heatmap with the mask and correct aspect ratio</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">corr</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=.</span><span class="mi">3</span><span class="p">,</span> <span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                            <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=.</span><span class="mi">5</span><span class="p">,</span> <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;shrink&quot;</span><span class="p">:</span> <span class="o">.</span><span class="mi">5</span><span class="p">})</span></div>
+    
+<div class="viewcode-block" id="Chart.plot_on_map"><a class="viewcode-back" href="../index.html#chart.Chart.plot_on_map">[docs]</a>    <span class="k">def</span> <span class="nf">plot_on_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">iso_locations_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">circle_size_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">animation_frame_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">hover_name_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+                    <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;natural earth&#39;</span><span class="p">,</span>
+                    <span class="n">scope</span><span class="o">=</span><span class="s1">&#39;world&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter_geo</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span>
+            <span class="n">locations</span><span class="o">=</span><span class="n">iso_locations_column</span><span class="p">,</span>
+            <span class="n">size</span><span class="o">=</span><span class="n">circle_size_column</span><span class="p">,</span>
+            <span class="n">animation_frame</span><span class="o">=</span><span class="n">animation_frame_column</span><span class="p">,</span>
+            <span class="n">hover_name</span><span class="o">=</span><span class="n">hover_name_column</span><span class="p">,</span>
+            <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">group_by</span><span class="p">,</span>
+            <span class="n">projection</span><span class="o">=</span><span class="n">projection</span><span class="p">,</span>
+            <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span>
+            <span class="p">)</span></div>
+        
+<div class="viewcode-block" id="Chart.plot_colored_map"><a class="viewcode-back" href="../index.html#chart.Chart.plot_colored_map">[docs]</a>    <span class="k">def</span> <span class="nf">plot_colored_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                    <span class="n">iso_locations_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">color_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">animation_frame_column</span><span class="o">=</span><span class="s2">&quot;Year&quot;</span><span class="p">,</span>
+                    <span class="n">scope</span><span class="o">=</span><span class="s1">&#39;world&#39;</span><span class="p">,</span>
+                    <span class="n">hover_name_column</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="c1"># column to add to hover information</span>
+                    <span class="p">):</span><span class="c1"># column on which to animate):</span>
+       <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">choropleth</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">dataframe</span><span class="p">,</span>
+                    <span class="n">locations</span><span class="o">=</span><span class="n">iso_locations_column</span><span class="p">,</span>
+                    <span class="n">scope</span><span class="o">=</span><span class="n">scope</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">color_column</span><span class="p">,</span> <span class="c1"># lifeExp is a column of gapminder</span>
+                    <span class="n">hover_name</span><span class="o">=</span><span class="n">hover_name_column</span><span class="p">,</span> <span class="c1"># column to add to hover information</span>
+                    <span class="n">color_continuous_scale</span><span class="o">=</span><span class="n">px</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">sequential</span><span class="o">.</span><span class="n">Plasma</span><span class="p">,</span>
+                    <span class="n">animation_frame</span><span class="o">=</span><span class="n">animation_frame_column</span><span class="p">,</span>
+                    <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;natural earth&#39;</span><span class="c1"># column on which to animate</span>
+                    <span class="p">)</span></div>
+                
+        
+<div class="viewcode-block" id="Chart.show"><a class="viewcode-back" href="../index.html#chart.Chart.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotly</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Chart.config"><a class="viewcode-back" href="../index.html#chart.Chart.config">[docs]</a>    <span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+               <span class="n">title</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> 
+               <span class="n">x_label</span><span class="o">=</span><span class="s2">&quot;X&quot;</span><span class="p">,</span> 
+               <span class="n">y_label</span><span class="o">=</span><span class="s2">&quot;Y&quot;</span><span class="p">,</span> 
+               <span class="n">x_limit_i</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+               <span class="n">x_limit_f</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+               <span class="n">y_limit_i</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+               <span class="n">y_limit_f</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> 
+               <span class="n">interval</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">x_rotation_angle</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span>
+               <span class="n">y_rotation_angle</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+               <span class="n">titile_font_size</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
+               <span class="n">x_label_font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+               <span class="n">y_label_font_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+               <span class="n">x_font_size</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+               <span class="n">y_font_size</span><span class="o">=</span><span class="mi">13</span><span class="p">,</span>
+               <span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotly</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span>
+            <span class="c1"># add a title text for the plot</span>
+            <span class="n">title_text</span> <span class="o">=</span> <span class="n">title</span><span class="p">,</span>
+            <span class="c1"># set projection style for the plot</span>
+            <span class="c1">#geo = dict(projection={&#39;type&#39;:&#39;natural earth&#39;}</span>
+            <span class="p">)</span> <span class="c1"># by default, projection type is set to &#39;equirectangular&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="n">title</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">x_limit_i</span><span class="p">,</span> <span class="n">x_limit_f</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="n">y_limit_i</span><span class="p">,</span> <span class="n">y_limit_f</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="n">x_rotation_angle</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">x_font_size</span><span class="p">)</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="n">y_rotation_angle</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">y_font_size</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">titile_font_size</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="n">x_label</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">x_label_font_size</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">y_label</span><span class="p">,</span><span class="n">fontsize</span><span class="o">=</span><span class="n">y_label_font_size</span><span class="p">)</span>
+            
+            <span class="k">if</span> <span class="n">interval</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">loc</span> <span class="o">=</span> <span class="n">plticker</span><span class="o">.</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="n">base</span><span class="o">=</span><span class="n">interval</span><span class="p">)</span> <span class="c1"># this locator puts ticks at regular intervals</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Chart.save"><a class="viewcode-back" href="../index.html#chart.Chart.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">chart_path</span><span class="o">=</span><span class="s2">&quot;output.png&quot;</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">chart_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">chart_path</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="n">transparent</span><span class="p">,</span> <span class="n">bbox_inches</span> <span class="o">=</span> <span class="s1">&#39;tight&#39;</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EL HACHIMI CHOUAIB.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

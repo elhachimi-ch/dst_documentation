@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>imagefactory &mdash; Data Science Toolkit 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Data Science Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Science Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>imagefactory</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for imagefactory</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">imutils</span>
+<span class="kn">import</span> <span class="nn">imutils.perspective</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">skimage.filters</span> <span class="k">import</span> <span class="n">threshold_local</span>
+
+<div class="viewcode-block" id="ImageFactory"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory">[docs]</a><span class="k">class</span> <span class="nc">ImageFactory</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img_link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__img</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">url</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__img</span> <span class="o">=</span> <span class="n">imutils</span><span class="o">.</span><span class="n">url_to_image</span><span class="p">(</span><span class="n">img_link</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">img_link</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ImageFactory.set_image"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.set_image">[docs]</a>    <span class="k">def</span> <span class="nf">set_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">img</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__img</span> <span class="o">=</span> <span class="n">img</span></div>
+
+<div class="viewcode-block" id="ImageFactory.get_image"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.get_image">[docs]</a>    <span class="k">def</span> <span class="nf">get_image</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__img</span></div>
+
+<div class="viewcode-block" id="ImageFactory.reshape"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.reshape">[docs]</a>    <span class="k">def</span> <span class="nf">reshape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_shape_tuple</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">(),</span> <span class="n">new_shape_tuple</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ImageFactory.show"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="s2">&quot;Image&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">imutils</span><span class="o">.</span><span class="n">opencv2matplotlib</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ImageFactory.resize"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.resize">[docs]</a>    <span class="k">def</span> <span class="nf">resize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_size_tuple</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="c1"># (height, width)</span>
+        <span class="k">if</span> <span class="n">auto</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__img</span> <span class="o">=</span> <span class="n">imutils</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">new_size_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="n">new_size_tuple</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ImageFactory.crop"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.crop">[docs]</a>    <span class="k">def</span> <span class="nf">crop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_left_tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">bottom_right_tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">[</span><span class="n">top_left_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span><span class="n">bottom_right_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">top_left_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">bottom_right_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span></div>
+
+<div class="viewcode-block" id="ImageFactory.to_gray_scale"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.to_gray_scale">[docs]</a>    <span class="k">def</span> <span class="nf">to_gray_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ImageFactory.rotat_image"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.rotat_image">[docs]</a>    <span class="k">def</span> <span class="nf">rotat_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">angle</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">imutils</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="n">angle</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ImageFactory.find_contour"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.find_contour">[docs]</a>    <span class="k">def</span> <span class="nf">find_contour</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seuil</span><span class="o">=</span><span class="mi">75</span><span class="p">,</span> <span class="n">auto_threshold</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_points</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">auto_canny</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="c1"># find contours (i.e., outlines) of the foreground objects in the</span>
+        <span class="c1"># thresholded image</span>
+        <span class="c1"># find contours and draw them in _img and return them as a list of tuples</span>
+        <span class="k">if</span> <span class="n">auto_threshold</span><span class="p">:</span>
+            <span class="n">thresh</span> <span class="o">=</span> <span class="n">ImageFactory</span><span class="p">()</span>
+            <span class="n">thresh</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">())</span>
+            <span class="n">thresh</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">thresh</span><span class="o">.</span><span class="n">get_contour_canny</span><span class="p">(</span><span class="n">auto</span><span class="o">=</span><span class="n">auto_canny</span><span class="p">,</span> <span class="n">seuil</span><span class="o">=</span><span class="n">seuil</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">thresh</span> <span class="o">=</span> <span class="n">ImageFactory</span><span class="p">()</span>
+            <span class="n">thresh</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">())</span>
+            <span class="n">thresh</span><span class="o">.</span><span class="n">to_gray_scale</span><span class="p">()</span>
+            <span class="n">thresh</span><span class="o">.</span><span class="n">gaussian_blur</span><span class="p">()</span>
+            <span class="n">thresh</span><span class="o">.</span><span class="n">adaptive_treshold</span><span class="p">()</span>
+        <span class="n">screen_cnt</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">all_points</span><span class="p">:</span>
+            <span class="n">cnts</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span><span class="n">thresh</span><span class="o">.</span><span class="n">get_image</span><span class="p">(),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_SIMPLE</span><span class="p">)</span>
+            <span class="n">cnts</span> <span class="o">=</span> <span class="n">imutils</span><span class="o">.</span><span class="n">grab_contours</span><span class="p">(</span><span class="n">cnts</span><span class="p">)</span>
+            <span class="n">cnts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">cnts</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">contourArea</span><span class="p">,</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)[:</span><span class="mi">5</span><span class="p">]</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">cnts</span><span class="p">:</span>
+                <span class="c1"># Mo7iit</span>
+                <span class="n">peri</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">arcLength</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+                <span class="c1"># trouver le contour li kay dir chkl li baghin lwsst</span>
+                <span class="n">approx</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">approxPolyDP</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="n">peri</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+                <span class="c1"># if our approximated contour has four points, then we</span>
+                <span class="c1"># can assume that we have found our screen</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">approx</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+                    <span class="n">screen_cnt</span> <span class="o">=</span> <span class="n">approx</span>
+                    <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">screen_cnt</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span><span class="n">thresh</span><span class="o">.</span><span class="n">get_image</span><span class="p">(),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_NONE</span><span class="p">)</span>
+            <span class="n">screen_cnt</span> <span class="o">=</span> <span class="n">imutils</span><span class="o">.</span><span class="n">grab_contours</span><span class="p">(</span><span class="n">screen_cnt</span><span class="p">)</span>
+
+        <span class="c1"># loop over the contours</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">screen_cnt</span><span class="p">:</span>
+            <span class="c1"># draw each contour on the output image with a 3px thick purple</span>
+            <span class="c1"># outline, then display the output contours one at a time</span>
+            <span class="n">cv2</span><span class="o">.</span><span class="n">drawContours</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="p">[</span><span class="n">c</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">240</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">159</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+
+        <span class="n">pts</span> <span class="o">=</span> <span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">screen_cnt</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">pts</span></div>
+
+<div class="viewcode-block" id="ImageFactory.get_contour_canny"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.get_contour_canny">[docs]</a>    <span class="k">def</span> <span class="nf">get_contour_canny</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">seuil</span><span class="o">=</span><span class="mi">75</span><span class="p">):</span>
+        <span class="n">gray</span> <span class="o">=</span> <span class="n">ImageFactory</span><span class="p">()</span>
+        <span class="n">gray</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">())</span>
+        <span class="n">gray</span><span class="o">.</span><span class="n">to_gray_scale</span><span class="p">()</span>
+        <span class="n">gray</span><span class="o">.</span><span class="n">gaussian_blur</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">auto</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">imutils</span><span class="o">.</span><span class="n">auto_canny</span><span class="p">(</span><span class="n">gray</span><span class="o">.</span><span class="n">get_image</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Canny</span><span class="p">(</span><span class="n">gray</span><span class="o">.</span><span class="n">get_image</span><span class="p">(),</span> <span class="n">seuil</span><span class="p">,</span> <span class="mi">200</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ImageFactory.gaussian_blur"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.gaussian_blur">[docs]</a>    <span class="k">def</span> <span class="nf">gaussian_blur</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">taille_mask</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">(),</span> <span class="n">taille_mask</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ImageFactory.get_median_blur"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.get_median_blur">[docs]</a>    <span class="k">def</span> <span class="nf">get_median_blur</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">medianBlur</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">(),</span> <span class="mi">5</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ImageFactory.scan"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.scan">[docs]</a>    <span class="k">def</span> <span class="nf">scan</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_gray_scale</span><span class="p">()</span>
+        <span class="c1"># convert the warped image to grayscale, then threshold it</span>
+        <span class="c1"># to give it that &#39;black and white&#39; paper effect</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">threshold_local</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;gaussian&quot;</span><span class="p">)</span>
+        <span class="n">warped</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span> <span class="o">&gt;</span> <span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;uint8&quot;</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">warped</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ImageFactory.perspective_vue_from_4_points"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.perspective_vue_from_4_points">[docs]</a>    <span class="k">def</span> <span class="nf">perspective_vue_from_4_points</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">points_list</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># load the notecard code image, clone it, and initialize the 4 points</span>
+        <span class="c1"># that correspond to the 4 corners of the notecard</span>
+        <span class="k">if</span> <span class="n">points_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pts</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">),</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">0</span><span class="p">]),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span>
+                                                                                                  <span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">0</span><span class="p">])]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pts</span> <span class="o">=</span> <span class="n">points_list</span>
+
+        <span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
+
+        <span class="c1"># loop over the points and draw them on the cloned image</span>
+        <span class="sd">&quot;&quot;&quot;for (x, y) in pts:</span>
+<span class="sd">            cv2.circle(self.__img, (x, y), 5, (0, 255, 0), -1)&quot;&quot;&quot;</span>
+
+        <span class="c1"># apply the four point tranform to obtain a &quot;birds eye view&quot; of</span>
+        <span class="c1"># the notecard</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">imutils</span><span class="o">.</span><span class="n">perspective</span><span class="o">.</span><span class="n">four_point_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">(),</span> <span class="n">pts</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ImageFactory.find_skeleton"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.find_skeleton">[docs]</a>    <span class="k">def</span> <span class="nf">find_skeleton</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="ImageFactory.get_shape"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.get_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span></div>
+
+<div class="viewcode-block" id="ImageFactory.write_text"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.write_text">[docs]</a>    <span class="k">def</span> <span class="nf">write_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text_to_write</span><span class="p">,</span> <span class="n">text_position_tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">color_gbr_tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">font_size</span><span class="o">=</span><span class="mf">0.7</span><span class="p">):</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">putText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="n">text_to_write</span><span class="p">,</span> <span class="n">text_position_tuple</span><span class="p">,</span>
+                    <span class="n">cv2</span><span class="o">.</span><span class="n">FONT_HERSHEY_SIMPLEX</span><span class="p">,</span> <span class="n">font_size</span><span class="p">,</span> <span class="n">color_gbr_tuple</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ImageFactory.merge"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.merge">[docs]</a>    <span class="k">def</span> <span class="nf">merge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_link</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">ImageFactory</span><span class="p">(</span><span class="n">image_link</span><span class="p">)</span>
+        <span class="n">img_shape</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()</span> <span class="o">!=</span> <span class="n">img_shape</span><span class="p">:</span>
+            <span class="n">img_shape</span> <span class="o">=</span> <span class="p">(</span><span class="n">img_shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">img_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">img</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img_shape</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">])</span>
+
+        <span class="k">if</span> <span class="n">alpha</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">(),</span> <span class="n">img</span><span class="o">.</span><span class="n">get_image</span><span class="p">()))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">addWeighted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">(),</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">get_image</span><span class="p">(),</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">alpha</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ImageFactory.rectangle"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.rectangle">[docs]</a>    <span class="k">def</span> <span class="nf">rectangle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">top_left_tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">bottom_right_tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">rect_color_tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)):</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="n">top_left_tuple</span><span class="p">,</span> <span class="n">bottom_right_tuple</span><span class="p">,</span> <span class="n">rect_color_tuple</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ImageFactory.cercle"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.cercle">[docs]</a>    <span class="k">def</span> <span class="nf">cercle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">centre_tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">rayon</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">cer_color_tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="n">centre_tuple</span><span class="p">,</span> <span class="n">rayon</span><span class="p">,</span> <span class="n">cer_color_tuple</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ImageFactory.line"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.line">[docs]</a>    <span class="k">def</span> <span class="nf">line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point_a</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">point_b</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="n">line_color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)):</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="n">point_a</span><span class="p">,</span> <span class="n">point_b</span><span class="p">,</span> <span class="n">line_color</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ImageFactory.threshold"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.threshold">[docs]</a>    <span class="k">def</span> <span class="nf">threshold</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seuil</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">inversed_binary</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">inversed_binary</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="n">seuil</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY_INV</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="n">seuil</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="ImageFactory.adaptive_treshold"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.adaptive_treshold">[docs]</a>    <span class="k">def</span> <span class="nf">adaptive_treshold</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">adaptiveThreshold</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__img</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">ADAPTIVE_THRESH_GAUSSIAN_C</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ImageFactory.save"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image_name_path</span><span class="o">=</span><span class="s1">&#39;image.jpg&#39;</span><span class="p">):</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="n">image_name_path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="ImageFactory.get_bgr_layers"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.get_bgr_layers">[docs]</a>    <span class="k">def</span> <span class="nf">get_bgr_layers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ImageFactory.get_histogramme"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.get_histogramme">[docs]</a>    <span class="k">def</span> <span class="nf">get_histogramme</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calcHist</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">()],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">256</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="ImageFactory.show_histograme"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.show_histograme">[docs]</a>    <span class="k">def</span> <span class="nf">show_histograme</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rgb</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">rgb</span><span class="p">:</span>
+            <span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">())</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">()[</span><span class="o">...</span><span class="p">,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="n">b</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">r</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;b&quot;</span><span class="p">,</span> <span class="s2">&quot;g&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">]):</span>
+                <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+                <span class="n">ys</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calcHist</span><span class="p">([</span><span class="n">x</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">256</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">])</span>
+                <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">4</span><span class="p">))</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">)</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">ImageFactory</span><span class="p">()</span>
+            <span class="n">img</span><span class="o">.</span><span class="n">set_image</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">())</span>
+            <span class="n">img</span><span class="o">.</span><span class="n">to_rgb</span><span class="p">()</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">get_image</span><span class="p">())</span>
+            <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">)</span>
+            <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+            <span class="n">ys</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calcHist</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">()],</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">None</span><span class="p">,</span> <span class="p">[</span><span class="mi">256</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">256</span><span class="p">])</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;X&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ImageFactory.to_rgb"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.to_rgb">[docs]</a>    <span class="k">def</span> <span class="nf">to_rgb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_image</span><span class="p">(),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ImageFactory.find_function"><a class="viewcode-back" href="../index.html#imagefactory.ImageFactory.find_function">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">find_function</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">imutils</span><span class="o">.</span><span class="n">find_function</span><span class="p">(</span><span class="n">func</span><span class="p">))</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EL HACHIMI CHOUAIB.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

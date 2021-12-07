@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>lib &mdash; Data Science Toolkit 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Data Science Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Science Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>lib</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for lib</h1><div class="highlight"><pre>
+<span></span><span class="c1"># coding=utf-8</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="k">import</span> <span class="n">listdir</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">isfile</span><span class="p">,</span> <span class="n">join</span>
+<span class="kn">import</span> <span class="nn">math</span>
+
+<div class="viewcode-block" id="Lib"><a class="viewcode-back" href="../index.html#lib.Lib">[docs]</a><span class="k">class</span> <span class="nc">Lib</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot; Lib class is a static class that serves other components with implementations of auxiliary algorithms . </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+<div class="viewcode-block" id="Lib.write_list_as_csv"><a class="viewcode-back" href="../index.html#lib.Lib.write_list_as_csv">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">write_list_as_csv</span><span class="p">(</span><span class="n">liste_ligne_csv</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;data/out.csv&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="s1">&#39;`&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            liste_ligne_csv ([type]): [description]</span>
+<span class="sd">            file_name (str, optional): [description]. Defaults to &#39;data/out.csv&#39;.</span>
+<span class="sd">            delimiter (str, optional): [description]. Defaults to &#39;,&#39;.</span>
+<span class="sd">            quotechar (str, optional): [description]. Defaults to &#39;`&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">quoting</span><span class="o">=</span><span class="n">csv</span><span class="o">.</span><span class="n">QUOTE_NONNUMERIC</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="n">quotechar</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">liste_ligne_csv</span><span class="p">:</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Lib.save_object"><a class="viewcode-back" href="../index.html#lib.Lib.save_object">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">save_object</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">object_path</span><span class="p">):</span>
+        <span class="n">pickle</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">object_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Lib.load_object"><a class="viewcode-back" href="../index.html#lib.Lib.load_object">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">load_object</span><span class="p">(</span><span class="n">obj_path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">obj_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Lib.c_n_k"><a class="viewcode-back" href="../index.html#lib.Lib.c_n_k">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">c_n_k</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;A fast way to calculate binomial coefficients by Andrew Dalke (contrib).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n (int): N</span>
+<span class="sd">            k (int): K</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int:  combination of k from n</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">k</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">:</span>
+            <span class="n">ntok</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="n">ktok</span> <span class="o">=</span> <span class="mi">1</span>
+            <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">ntok</span> <span class="o">*=</span> <span class="n">n</span>
+                <span class="n">ktok</span> <span class="o">*=</span> <span class="n">t</span>
+                <span class="n">n</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="n">ntok</span> <span class="o">//</span> <span class="n">ktok</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">0</span></div>
+
+    <span class="c1"># factorielle</span>
+<div class="viewcode-block" id="Lib.factorial"><a class="viewcode-back" href="../index.html#lib.Lib.factorial">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">factorial</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">result</span> <span class="o">*</span> <span class="n">x</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">result</span></div>
+
+    <span class="c1"># Fonction partie entière E()</span>
+<div class="viewcode-block" id="Lib.partie_entiere"><a class="viewcode-back" href="../index.html#lib.Lib.partie_entiere">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">partie_entiere</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">x</span>
+        <span class="k">elif</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="o">-</span><span class="n">Lib</span><span class="o">.</span><span class="n">partie_entiere</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span></div>
+
+    <span class="c1"># Algorithme d&#39;Euclide pour le pgcd</span>
+<div class="viewcode-block" id="Lib.pgcd_iterative"><a class="viewcode-back" href="../index.html#lib.Lib.pgcd_iterative">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">pgcd_iterative</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">while</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span>
+        <span class="k">return</span> <span class="n">b</span></div>
+
+<div class="viewcode-block" id="Lib.pgcd_recursive"><a class="viewcode-back" href="../index.html#lib.Lib.pgcd_recursive">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">pgcd_recursive</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">b</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Lib</span><span class="o">.</span><span class="n">pgcd_recursive</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">%</span> <span class="n">b</span><span class="p">)</span></div>
+
+    <span class="c1"># plus petit commun multiple</span>
+<div class="viewcode-block" id="Lib.ppmc"><a class="viewcode-back" href="../index.html#lib.Lib.ppmc">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">ppmc</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">Lib</span><span class="o">.</span><span class="n">pgcd_recursive</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span></div>
+
+    <span class="c1"># verifier premier</span>
+<div class="viewcode-block" id="Lib.is_premier"><a class="viewcode-back" href="../index.html#lib.Lib.is_premier">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_premier</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">n</span><span class="p">))):</span>
+                <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+    <span class="c1"># decomposition en nombre premier</span>
+<div class="viewcode-block" id="Lib.decompsition_to_prime"><a class="viewcode-back" href="../index.html#lib.Lib.decompsition_to_prime">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">decompsition_to_prime</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">99</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Decompse a number to prime numbers</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n (int, optional): number to decompose. Defaults to 99.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: list of prime numbers and their power</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">liste</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">Lib</span><span class="o">.</span><span class="n">is_premier</span><span class="p">(</span><span class="n">n</span><span class="p">)</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">or</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">liste</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">n</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span>
+            <span class="k">while</span> <span class="n">n</span> <span class="o">//</span> <span class="n">i</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">while</span> <span class="n">n</span> <span class="o">%</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+                        <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="n">i</span>
+                    <span class="n">liste</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">return</span> <span class="n">liste</span></div>
+
+    <span class="c1"># from scipy.comb(), but MODIFIED!</span>
+<div class="viewcode-block" id="Lib.c_n_k_scipy"><a class="viewcode-back" href="../index.html#lib.Lib.c_n_k_scipy">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">c_n_k_scipy</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">k</span> <span class="o">&gt;</span> <span class="n">n</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">n</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">k</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">n</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">top</span> <span class="o">&gt;</span> <span class="p">(</span><span class="n">n</span> <span class="o">-</span> <span class="n">k</span><span class="p">):</span>
+            <span class="n">val</span> <span class="o">*=</span> <span class="n">top</span>
+            <span class="n">top</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">val</span> <span class="o">/=</span> <span class="n">n</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">val</span></div>
+
+<div class="viewcode-block" id="Lib.read_text_file"><a class="viewcode-back" href="../index.html#lib.Lib.read_text_file">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">read_text_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">with_anti_slash</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;r+&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">with_anti_slash</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)):</span>
+                <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;\n&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="Lib.write_liste_in_file"><a class="viewcode-back" href="../index.html#lib.Lib.write_liste_in_file">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">write_liste_in_file</span><span class="p">(</span><span class="n">liste</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;data/out.txt&#39;</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;w+&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">liste</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">liste</span><span class="p">))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">liste</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">liste</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">liste</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> 
+        <span class="n">f</span><span class="o">.</span><span class="n">writelines</span><span class="p">(</span><span class="n">liste</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Lib.strip_and_split"><a class="viewcode-back" href="../index.html#lib.Lib.strip_and_split">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">strip_and_split</span><span class="p">(</span><span class="n">string_in</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">string_in</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Lib.to_upper_file_text"><a class="viewcode-back" href="../index.html#lib.Lib.to_upper_file_text">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">to_upper_file_text</span><span class="p">(</span><span class="n">path_source</span><span class="p">,</span> <span class="n">path_destination</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">Lib</span><span class="o">.</span><span class="n">read_text_file</span><span class="p">(</span><span class="n">path_source</span><span class="p">)</span>
+        <span class="n">la</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">la</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+        <span class="n">Lib</span><span class="o">.</span><span class="n">write_liste_in_file</span><span class="p">(</span><span class="n">path_destination</span><span class="p">,</span> <span class="n">la</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Lib.write_line_in_file"><a class="viewcode-back" href="../index.html#lib.Lib.write_line_in_file">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">write_line_in_file</span><span class="p">(</span><span class="n">line</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;data/latin_comments.csv&#39;</span><span class="p">,</span> <span class="n">with_anti_slash</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;a+&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">with_anti_slash</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Lib.list_to_string"><a class="viewcode-back" href="../index.html#lib.Lib.list_to_string">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">list_to_string</span><span class="p">(</span><span class="n">liste</span><span class="p">):</span>
+        <span class="n">liste_b</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">liste</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">str</span><span class="p">:</span>
+                <span class="n">liste_b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">liste_b</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">liste_b</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Lib.check_all_elements_type"><a class="viewcode-back" href="../index.html#lib.Lib.check_all_elements_type">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">check_all_elements_type</span><span class="p">(</span><span class="n">list_to_check</span><span class="p">,</span> <span class="n">types_tuple</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">types_tuple</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">list_to_check</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Lib.list_all_files_in_folder"><a class="viewcode-back" href="../index.html#lib.Lib.list_all_files_in_folder">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">list_all_files_in_folder</span><span class="p">(</span><span class="n">folder_path</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">f</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">listdir</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span> <span class="k">if</span> <span class="n">isfile</span><span class="p">(</span><span class="n">join</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">f</span><span class="p">))]</span></div>
+
+<div class="viewcode-block" id="Lib.get_mnist_as_dataframe"><a class="viewcode-back" href="../index.html#lib.Lib.get_mnist_as_dataframe">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_mnist_as_dataframe</span><span class="p">():</span>
+        <span class="sd">&quot;&quot;&quot;image_list = ch.get_reshaped_matrix(np.array([ch.get_reshaped_matrix(p, (1, 28 * 28)) for p in x_train]),</span>
+<span class="sd">                                            (x_train.shape[0], 28 * 28))&quot;&quot;&quot;</span></div>
+
+<div class="viewcode-block" id="Lib.is_empty_line"><a class="viewcode-back" href="../index.html#lib.Lib.is_empty_line">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">is_empty_line</span><span class="p">(</span><span class="n">string_in</span><span class="p">):</span>
+        <span class="n">string_in</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">string_in</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;^\s*$&#39;</span><span class="p">,</span> <span class="n">string_in</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="Lib.write_row_csv"><a class="viewcode-back" href="../index.html#lib.Lib.write_row_csv">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">write_row_csv</span><span class="p">(</span><span class="n">row_liste</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s1">&#39;data/latin_comments.csv&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="s1">&#39;`&#39;</span><span class="p">):</span>
+        <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_name</span><span class="p">,</span> <span class="s1">&#39;a+&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">quoting</span><span class="o">=</span><span class="n">csv</span><span class="o">.</span><span class="n">QUOTE_NONNUMERIC</span><span class="p">,</span> <span class="n">quotechar</span><span class="o">=</span><span class="n">quotechar</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row_liste</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Lib.read_csv"><a class="viewcode-back" href="../index.html#lib.Lib.read_csv">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+        <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;r+&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+        <span class="n">reader</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">reader</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">reader</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EL HACHIMI CHOUAIB.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

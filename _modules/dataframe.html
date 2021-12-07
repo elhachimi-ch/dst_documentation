@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>dataframe &mdash; Data Science Toolkit 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Data Science Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Science Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>dataframe</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for dataframe</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">timedelta</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="k">import</span> <span class="n">ceil</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">scipy.sparse</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="k">import</span> <span class="n">DictVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="k">import</span> <span class="n">LocalOutlierFactor</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">MinMaxScaler</span>
+<span class="kn">from</span> <span class="nn">lib</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">vectorizer</span> <span class="k">import</span> <span class="n">Vectorizer</span>
+<span class="kn">from</span> <span class="nn">wordcloud</span> <span class="k">import</span> <span class="n">WordCloud</span><span class="p">,</span> <span class="n">STOPWORDS</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">minmax_scale</span>
+<span class="kn">from</span> <span class="nn">sklearn.compose</span> <span class="k">import</span> <span class="n">ColumnTransformer</span>
+<span class="kn">from</span> <span class="nn">keras.preprocessing.sequence</span> <span class="k">import</span> <span class="n">TimeseriesGenerator</span> <span class="k">as</span> <span class="n">SG</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="k">import</span> <span class="n">load_iris</span><span class="p">,</span> <span class="n">load_boston</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="DataFrame"><a class="viewcode-back" href="../index.html#dataframe.DataFrame">[docs]</a><span class="k">class</span> <span class="nc">DataFrame</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;DataFrame class for dealing with exploratry data analysis and data preprocessing</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">__vectorizer</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">__generator</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_link</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">columns_names_as_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_types_in_order</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>
+                 <span class="n">file_type</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">,</span> <span class="n">line_index</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">skip_empty_line</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="s1">&#39;Sheet1&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data_link</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;csv&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_link</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">low_memory</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">error_bad_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip_blank_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_json</span><span class="p">(</span><span class="n">data_link</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;xls&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">data_link</span><span class="p">,</span> <span class="n">sheet_name</span><span class="o">=</span><span class="n">sheet_name</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;dict&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">data_link</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;matrix&#39;</span><span class="p">:</span>
+                <span class="n">index_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_link</span><span class="p">))]</span>
+                <span class="n">colums_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data_link</span><span class="p">[</span><span class="mi">0</span><span class="p">]))]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data_link</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index_name</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">colums_name</span><span class="p">)</span>
+                <span class="sd">&quot;&quot;&quot;data = array([[&#39;&#39;,&#39;Col1&#39;,&#39;Col2&#39;],[&#39;Row1&#39;,1,2],[&#39;Row2&#39;,3,4]])</span>
+<span class="sd">                pd.DataFrame(data=data[1:,1:], index=data[1:,0], columns=data[0,1:]) &quot;&quot;&quot;</span>
+            <span class="n">types</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">if</span> <span class="n">data_types_in_order</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">columns_names_as_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">columns_names_as_list</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">columns_names_as_list</span><span class="p">)):</span>
+                    <span class="n">types</span><span class="p">[</span><span class="n">columns_names_as_list</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">=</span> <span class="n">data_types_in_order</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">columns_names_as_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">columns_names_as_list</span>
+                <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">columns_names_as_list</span><span class="p">:</span>
+                    <span class="n">types</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">line_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">line_index</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="DataFrame.get_generator"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_generator">[docs]</a>    <span class="k">def</span> <span class="nf">get_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (generator): return the data generator build using the dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__generator</span></div>
+    
+<div class="viewcode-block" id="DataFrame.get_index"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_index">[docs]</a>    <span class="k">def</span> <span class="nf">get_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_list</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="DataFrame.add_time_serie_row"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.add_time_serie_row">[docs]</a>    <span class="k">def</span> <span class="nf">add_time_serie_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date_column</span><span class="p">,</span> <span class="n">value_column</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="s1">&#39;%Y&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            date_column (str): The column containing the date</span>
+<span class="sd">            value_column (str): The column containing values of the time series</span>
+<span class="sd">            value ([type]): new value to add</span>
+<span class="sd">            date_format (str, optional): The RegEx patern of date format. Defaults to &#39;%Y&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">last_date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_index</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">dataframe</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">([{</span><span class="n">value_column</span><span class="p">:</span> <span class="n">value</span><span class="p">,</span> <span class="n">date_column</span><span class="p">:</span> <span class="n">last_date</span><span class="p">}],</span> <span class="n">file_type</span><span class="o">=</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
+        <span class="n">dataframe</span><span class="o">.</span><span class="n">to_time_series</span><span class="p">(</span><span class="n">date_column</span><span class="p">,</span> <span class="n">value_column</span><span class="p">,</span> <span class="n">one_row</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="n">date_format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">append_dataframe</span><span class="p">(</span><span class="n">dataframe</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span></div>
+        
+<div class="viewcode-block" id="DataFrame.set_generator"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.set_generator">[docs]</a>    <span class="k">def</span> <span class="nf">set_generator</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generator</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__generator</span> <span class="o">=</span> <span class="n">generator</span></div>
+
+<div class="viewcode-block" id="DataFrame.set_dataframe"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.set_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">set_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="s1">&#39;df&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;matrix&#39;</span><span class="p">:</span>
+            <span class="n">index_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">))]</span>
+            <span class="n">colums_name</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]))]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">data</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index_name</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">colums_name</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;df&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="n">data</span></div>
+
+<div class="viewcode-block" id="DataFrame.get_data_types"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_data_types">[docs]</a>    <span class="k">def</span> <span class="nf">get_data_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            show (bool, optional): if True printing the dataframe in console. Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: a list of data types of all columns in the dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">types</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">dtypes</span>
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">types</span></div>
+    
+<div class="viewcode-block" id="DataFrame.set_data_types"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.set_data_types">[docs]</a>    <span class="k">def</span> <span class="nf">set_data_types</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_dict_types</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">column_dict_types</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="DataFrame.set_same_type"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.set_same_type">[docs]</a>    <span class="k">def</span> <span class="nf">set_same_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">same_type</span><span class="o">=</span><span class="s1">&#39;float64&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        example of types: float64, object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_columns_names</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_column_type</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">same_type</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.describe"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.describe">[docs]</a>    <span class="k">def</span> <span class="nf">describe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            show (bool, optional): if True printing the dataframe in console. Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            [type]: [description]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">description</span></div>
+    
+<div class="viewcode-block" id="DataFrame.reset_index"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.reset_index">[docs]</a>    <span class="k">def</span> <span class="nf">reset_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">reset_index</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="DataFrame.get_dataframe_as_sparse_matrix"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_dataframe_as_sparse_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataframe_as_sparse_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">scipy</span><span class="o">.</span><span class="n">sparse</span><span class="o">.</span><span class="n">csr_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="DataFrame.get_column_as_list"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_column_as_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_column_as_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">))</span></div>
+    
+<div class="viewcode-block" id="DataFrame.get_column_as_joined_text"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_column_as_joined_text">[docs]</a>    <span class="k">def</span> <span class="nf">get_column_as_joined_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="DataFrame.get_term_doc_matrix_as_df"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_term_doc_matrix_as_df">[docs]</a>    <span class="k">def</span> <span class="nf">get_term_doc_matrix_as_df</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectorizer_type</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build a term matrix document from a text column</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            vectorizer_type (str, optional): weighing scheme to use. Defaults to &#39;count&#39;.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">corpus</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="s1">&#39;comment&#39;</span><span class="p">))</span>
+        <span class="n">indice</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;doc&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">corpus</span><span class="p">))]</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">Vectorizer</span><span class="p">(</span><span class="n">corpus</span><span class="p">,</span> <span class="n">vectorizer_type</span><span class="o">=</span><span class="n">vectorizer_type</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">get_sparse_matrix</span><span class="p">()</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">v</span><span class="o">.</span><span class="n">get_features_names</span><span class="p">(),</span>
+                                      <span class="n">line_index</span><span class="o">=</span><span class="n">indice</span><span class="p">,</span> <span class="n">file_type</span><span class="o">=</span><span class="s1">&#39;ndarray&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="DataFrame.get_dataframe_from_dic_list"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_dataframe_from_dic_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataframe_from_dic_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dict_list</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">()</span>
+        <span class="n">matrice</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dict_list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">matrice</span><span class="o">.</span><span class="n">toarray</span><span class="p">(),</span> <span class="n">v</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">())</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="DataFrame.check_decision_function_on_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.check_decision_function_on_column">[docs]</a>    <span class="k">def</span> <span class="nf">check_decision_function_on_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">decision_func</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">decision_func</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="DataFrame.set_dataframe_index"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.set_dataframe_index">[docs]</a>    <span class="k">def</span> <span class="nf">set_dataframe_index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">liste_indices</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">liste_indices</span></div>
+
+<div class="viewcode-block" id="DataFrame.get_shape"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">shape</span></div>
+
+<div class="viewcode-block" id="DataFrame.set_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.set_column">[docs]</a>    <span class="k">def</span> <span class="nf">set_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">new_column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_column</span></div>
+
+<div class="viewcode-block" id="DataFrame.set_column_type"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.set_column_type">[docs]</a>    <span class="k">def</span> <span class="nf">set_column_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">column_type</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">column_type</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.get_lines_columns"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_lines_columns">[docs]</a>    <span class="k">def</span> <span class="nf">get_lines_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lines</span><span class="p">,</span> <span class="n">columns</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">check_all_elements_type</span><span class="p">(</span><span class="n">columns</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">lines</span><span class="p">,</span> <span class="n">columns</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">lines</span><span class="p">,</span> <span class="n">columns</span><span class="p">]</span></div>
+    
+<div class="viewcode-block" id="DataFrame.get_n_rows_as_dataframe"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_n_rows_as_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">get_n_rows_as_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_of_row</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;return n rows as new dataframe: give a negative value if you want begin from last row</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            number_of_row (int, optional): Defaults to 10.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            (dataframe): the new dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">number_of_row</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">number_of_row</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">number_of_row</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.get_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_column">[docs]</a>    <span class="k">def</span> <span class="nf">get_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()[</span><span class="n">column</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DataFrame.rename_columns"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.rename_columns">[docs]</a>    <span class="k">def</span> <span class="nf">rename_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_dict_or_all_list</span><span class="p">,</span> <span class="n">all_columns</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            column_dict_or_all_list (dictionary or list): dictionary of new column names or a list of all columns names</span>
+<span class="sd">            all_columns (bool, optional): [description]. Defaults to False.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">all_columns</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">types</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">columns</span> <span class="o">=</span> <span class="n">column_dict_or_all_list</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">column_dict_or_all_list</span><span class="p">:</span>
+                <span class="n">types</span><span class="p">[</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">types</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">column_dict_or_all_list</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.add_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.add_column">[docs]</a>    <span class="k">def</span> <span class="nf">add_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;add a new column to the dataframe</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            column (Series, ndarray or a list): column to be added</span>
+<span class="sd">            column_name (str): name of new added column</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">column</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">series</span><span class="o">.</span><span class="n">Series</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">frame</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">))):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">column</span><span class="p">)</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="p">(</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],))</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="p">[</span><span class="n">column_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span></div>
+
+<div class="viewcode-block" id="DataFrame.get_dataframe"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">get_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span></div>
+
+<div class="viewcode-block" id="DataFrame.request"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.request">[docs]</a>    <span class="k">def</span> <span class="nf">request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">select</span><span class="p">,</span> <span class="n">order_by</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">order_by</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">order_by</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="n">ascending</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="p">[</span><span class="n">select</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DataFrame.contains"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.contains">[docs]</a>    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">regex</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">regex</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.to_upper_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.to_upper_column">[docs]</a>    <span class="k">def</span> <span class="nf">to_upper_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="DataFrame.to_lower_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.to_lower_column">[docs]</a>    <span class="k">def</span> <span class="nf">to_lower_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="DataFrame.sub"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.sub">[docs]</a>    <span class="k">def</span> <span class="nf">sub</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">replacement</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">replacement</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.drop_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.drop_column">[docs]</a>    <span class="k">def</span> <span class="nf">drop_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="DataFrame.drop_index"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.drop_index">[docs]</a>    <span class="k">def</span> <span class="nf">drop_index</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> </div>
+        
+<div class="viewcode-block" id="DataFrame.drop_columns"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.drop_columns">[docs]</a>    <span class="k">def</span> <span class="nf">drop_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns_names_as_list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">columns_names_as_list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+            
+<div class="viewcode-block" id="DataFrame.keep_columns"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.keep_columns">[docs]</a>    <span class="k">def</span> <span class="nf">keep_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns_names_as_list</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_columns_names</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">p</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">columns_names_as_list</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.add_row"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.add_row">[docs]</a>    <span class="k">def</span> <span class="nf">add_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_as_dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">row_as_dict</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.pivot"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.pivot">[docs]</a>    <span class="k">def</span> <span class="nf">pivot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_columns_as_list</span><span class="p">,</span> <span class="n">column_columns_as_list</span><span class="p">,</span> <span class="n">column_of_values</span><span class="p">,</span> <span class="n">agg_func</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">index_columns_as_list</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">column_columns_as_list</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">column_of_values</span><span class="p">,</span> <span class="n">aggfunc</span><span class="o">=</span><span class="n">agg_func</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.group_by"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.group_by">[docs]</a>    <span class="k">def</span> <span class="nf">group_by</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">())</span></div>
+        
+<div class="viewcode-block" id="DataFrame.check_missed_data"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.check_missed_data">[docs]</a>    <span class="k">def</span> <span class="nf">check_missed_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Retrning statistics about missing data</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            column (str, optional): column name to check if None take all column in concidiration. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">column</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">isna</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()[</span><span class="n">column</span><span class="p">]))</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Missed data found in column &quot;</span> <span class="o">+</span> <span class="n">column</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No missed data in column &quot;</span> <span class="o">+</span> <span class="n">column</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">isna</span><span class="p">()</span><span class="o">.</span><span class="n">any</span><span class="p">())</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+                <span class="n">miss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+                <span class="k">if</span> <span class="n">miss</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">:</span>
+                    <span class="n">missing_data_percent</span> <span class="o">=</span> <span class="nb">round</span><span class="p">((</span><span class="n">miss</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span><span class="o">*</span><span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> has </span><span class="si">{}</span><span class="s2"> missing value(s) which represents </span><span class="si">{}% o</span><span class="s2">f dataset size&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">miss</span><span class="p">,</span> <span class="n">missing_data_percent</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">{}</span><span class="s2"> has NO missing value!&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">c</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="DataFrame.missing_data"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.missing_data">[docs]</a>    <span class="k">def</span> <span class="nf">missing_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filling_dict_colmn_val</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">drop_row_if_nan_in_column</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filling missing data</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            filling_dict_colmn_val (dict, optional): dictionary of missing values mapping. Defaults to None.</span>
+<span class="sd">            drop_row_if_nan_in_column (str, optional): delete the entire row if NaN is found in this column. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">drop_row_if_nan_in_column</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># a = a[~(np.isnan(a).all(axis=1))] # removes rows containing all nan</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="p">[</span><span class="n">drop_row_if_nan_in_column</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()])</span>
+            <span class="c1">#self.__dataframe = self.__dataframe[~(np.isnan(self.__dataframe).any(axis=1))] # removes rows containing at least one nan</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">filling_dict_colmn_val</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="DataFrame.get_row"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_row">[docs]</a>    <span class="k">def</span> <span class="nf">get_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">row_index</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">row_index</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DataFrame.replace_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.replace_column">[docs]</a>    <span class="k">def</span> <span class="nf">replace_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">pattern</span><span class="p">,</span> <span class="n">replacement</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">number_of_time</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">case_sensetivity</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">str</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="n">replacement</span><span class="p">,</span> <span class="n">regex</span><span class="o">=</span><span class="n">regex</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">number_of_time</span><span class="p">,</span>
+                                                                    <span class="n">case</span><span class="o">=</span><span class="n">case_sensetivity</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="DataFrame.replace_num_data"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.replace_num_data">[docs]</a>    <span class="k">def</span> <span class="nf">replace_num_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">,</span> <span class="n">replacement</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">replacement</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.map_function"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.map_function">[docs]</a>    <span class="k">def</span> <span class="nf">map_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">applymap</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.apply_fun_to_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.apply_fun_to_column">[docs]</a>    <span class="k">def</span> <span class="nf">apply_fun_to_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">func</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">in_place</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">func</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="DataFrame.convert_column_type"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.convert_column_type">[docs]</a>    <span class="k">def</span> <span class="nf">convert_column_type</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">new_type</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">new_type</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="DataFrame.union"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.union">[docs]</a>    <span class="k">def</span> <span class="nf">union</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">):</span>
+        <span class="c1"># conacatener deux dataframe avec column pas unique</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">(),</span> <span class="n">dataframe</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.append_dataframe"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.append_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">append_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">):</span>
+        <span class="c1"># append dataset contents data_sets must have the same columns names</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dataframe</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.intersection"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.intersection">[docs]</a>    <span class="k">def</span> <span class="nf">intersection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">column</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;inner&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.left_join"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.left_join">[docs]</a>    <span class="k">def</span> <span class="nf">left_join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">column</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.right_join"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.right_join">[docs]</a>    <span class="k">def</span> <span class="nf">right_join</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="p">,</span> <span class="n">dataframe</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="n">column</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.eliminate_outliers_neighbors"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.eliminate_outliers_neighbors">[docs]</a>    <span class="k">def</span> <span class="nf">eliminate_outliers_neighbors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_neighbors</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">contamination</span><span class="o">=.</span><span class="mi">05</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Delete outliers from the dataframe based on number of neighbors</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            n_neighbors (int, optional): . Defaults to 20.</span>
+<span class="sd">            contamination (float, optional): . Defaults to .05.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">outliers</span> <span class="o">=</span> <span class="n">LocalOutlierFactor</span><span class="p">(</span><span class="n">n_neighbors</span><span class="o">=</span><span class="n">n_neighbors</span><span class="p">,</span> <span class="n">contamination</span><span class="o">=</span><span class="n">contamination</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="p">[</span><span class="s1">&#39;inlier&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outliers</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">inlier</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span>
+                                                      <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()]</span></div>
+
+<div class="viewcode-block" id="DataFrame.get_pca"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_pca">[docs]</a>    <span class="k">def</span> <span class="nf">get_pca</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_dim</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply PCA method to the dataframe</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            new_dim (int):  dimensions of new dataframe i.e number of features</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            [type]: [description]</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># pca.explained_variance_ratio_ gain d&#39;info pour chaque vecteur</span>
+        <span class="n">pca_model</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">new_dim</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pca_model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="DataFrame.get_centre_reduite"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_centre_reduite">[docs]</a>    <span class="k">def</span> <span class="nf">get_centre_reduite</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Standar scaler</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dataframe: scaled dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sc</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">sc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span></div>
+    
+<div class="viewcode-block" id="DataFrame.column_to_standard_scale"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.column_to_standard_scale">[docs]</a>    <span class="k">def</span> <span class="nf">column_to_standard_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="n">sc</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+        <span class="n">columns_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_columns_names</span><span class="p">()</span>
+        <span class="n">dataframe_copy</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">dataframe</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="n">sc</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()),</span> <span class="n">columns_names_as_list</span><span class="o">=</span><span class="n">columns_names</span><span class="p">,</span> <span class="n">file_type</span><span class="o">=</span><span class="s1">&#39;matrix&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reindex_dataframe</span><span class="p">()</span>
+        <span class="n">dataframe_copy</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">dataframe</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="n">dataframe_copy</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span></div>
+    
+<div class="viewcode-block" id="DataFrame.s__column_to_min_max_scale"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.s__column_to_min_max_scale">[docs]</a>    <span class="k">def</span> <span class="nf">s__column_to_min_max_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">minmax_scale</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)))</span></div>
+        
+<div class="viewcode-block" id="DataFrame.column_to_min_max_scale"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.column_to_min_max_scale">[docs]</a>    <span class="k">def</span> <span class="nf">column_to_min_max_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Apply min/max scale to a column</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            column_name (str): name of the column to scale</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            series: new scaled column</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span> 
+        <span class="n">dataframe_copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_columns</span><span class="p">([</span><span class="n">column_name</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span>
+        <span class="n">scaled_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="n">dataframe_copy</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">,</span> <span class="n">scaled_column</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scaled_column</span></div>
+    
+<div class="viewcode-block" id="DataFrame.get_min_max_scaled_columns"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_min_max_scaled_columns">[docs]</a>    <span class="k">def</span> <span class="nf">get_min_max_scaled_columns</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">columns_names_as_list</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span> 
+        <span class="n">dataframe_copy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_columns</span><span class="p">(</span><span class="n">columns_names_as_list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span>
+        <span class="n">scaled_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="n">dataframe_copy</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">scaled_column</span></div>
+    
+<div class="viewcode-block" id="DataFrame.k_get_min_max_scaled_dataframe"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.k_get_min_max_scaled_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">k_get_min_max_scaled_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span>
+        <span class="n">scaled_dataframe</span> <span class="o">=</span> <span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()),</span> 
+                                     <span class="n">file_type</span><span class="o">=</span><span class="s1">&#39;matrix&#39;</span><span class="p">,</span>
+                                     <span class="n">columns_names_as_list</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_columns_names</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">scaled_dataframe</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="DataFrame.get_min_max_scaled_dataframe"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_min_max_scaled_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">get_min_max_scaled_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span></div>
+        
+<div class="viewcode-block" id="DataFrame.dataframe_to_min_max_scale"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.dataframe_to_min_max_scale">[docs]</a>    <span class="k">def</span> <span class="nf">dataframe_to_min_max_scale</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()))</span></div>
+        
+<div class="viewcode-block" id="DataFrame.get_inverse_transform"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_inverse_transform">[docs]</a>    <span class="k">def</span> <span class="nf">get_inverse_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">scaled_list</span><span class="p">):</span>
+        <span class="n">scaled_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">scaled_list</span><span class="p">,</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">scaled_list</span><span class="p">),</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span><span class="n">scaled_list</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="DataFrame.get_last_window_for_time_serie_as_list"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_last_window_for_time_serie_as_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_last_window_for_time_serie_as_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+        <span class="c1">#print(np.reshape(self.get_column(column).iloc[-window_size:].to_numpy(), (window_size, 1)))</span>
+        <span class="c1">#print(self.__vectorizer.transform([np.array(self.get_column(column).iloc[-window_size:])]))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="o">-</span><span class="n">window_size</span><span class="p">:]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">(),</span> <span class="p">(</span><span class="n">window_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="DataFrame.write_column_in_file"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.write_column_in_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_column_in_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;data/out.csv&#39;</span><span class="p">):</span>
+        <span class="n">write_liste_in_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="DataFrame.check_duplicated_rows"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.check_duplicated_rows">[docs]</a>    <span class="k">def</span> <span class="nf">check_duplicated_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">duplicated</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="DataFrame.check_duplicated_in_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.check_duplicated_in_column">[docs]</a>    <span class="k">def</span> <span class="nf">check_duplicated_in_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">duplicated</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="DataFrame.write_check_duplicated_column_result_in_file"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.write_check_duplicated_column_result_in_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_check_duplicated_column_result_in_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;data/latin_comments.csv&#39;</span><span class="p">):</span>
+        <span class="n">write_liste_in_file</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">duplicated</span><span class="p">()</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="DataFrame.write_files_grouped_by_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.write_files_grouped_by_column">[docs]</a>    <span class="k">def</span> <span class="nf">write_files_grouped_by_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_index</span><span class="p">,</span> <span class="n">dossier</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">:</span>
+            <span class="n">write_line_in_file</span><span class="p">(</span><span class="n">dossier</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="n">p</span><span class="p">[</span><span class="n">column_index</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="DataFrame.filter_dataframe"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.filter_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">filter_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">decision_function</span><span class="p">,</span> <span class="n">in_place</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;[summary]</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            column_name (str): name of the column to filter</span>
+<span class="sd">            decision_function (function): function that take in parameter a row and check a condition upon it</span>
+<span class="sd">            in_place (bool, optional): if True apply the decision function to inner dataframe. Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dataframe: filtred dataframe</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">in_place</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">decision_function</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]))])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">decision_function</span><span class="p">)])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">decision_function</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">args</span><span class="p">[</span><span class="mi">1</span><span class="p">]))]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">decision_function</span><span class="p">)]</span></div>
+
+<div class="viewcode-block" id="DataFrame.transform_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.transform_column">[docs]</a>    <span class="k">def</span> <span class="nf">transform_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_to_trsform</span><span class="p">,</span> <span class="n">column_src</span><span class="p">,</span> <span class="n">fun_de_trasformation</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column_to_trsform</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column_src</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">fun_de_trasformation</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">],)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column_to_trsform</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column_src</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">fun_de_trasformation</span><span class="p">))</span></div>
+            
+<div class="viewcode-block" id="DataFrame.to_no_accent_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.to_no_accent_column">[docs]</a>    <span class="k">def</span> <span class="nf">to_no_accent_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trasform_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">no_accent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="DataFrame.write_dataframe_in_file"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.write_dataframe_in_file">[docs]</a>    <span class="k">def</span> <span class="nf">write_dataframe_in_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">out_file</span><span class="o">=</span><span class="s1">&#39;data/out.csv&#39;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+        <span class="n">write_liste_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">out_file</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.sort"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.sort">[docs]</a>    <span class="k">def</span> <span class="nf">sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">by_columns_list</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">by_columns_list</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="n">ascending</span><span class="p">,</span>
+                                                              <span class="n">na_position</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="DataFrame.count_occurence_of_each_row"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.count_occurence_of_each_row">[docs]</a>    <span class="k">def</span> <span class="nf">count_occurence_of_each_row</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s1">&#39;size&#39;</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="DataFrame.get_distinct_values_as_list"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_distinct_values_as_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_distinct_values_as_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s1">&#39;size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">)</span></div>
+    
+<div class="viewcode-block" id="DataFrame.column_to_numerical_values"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.column_to_numerical_values">[docs]</a>    <span class="k">def</span> <span class="nf">column_to_numerical_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="n">maping</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="p">[</span><span class="n">column</span><span class="p">],</span> <span class="n">aggfunc</span><span class="o">=</span><span class="s1">&#39;size&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">o</span> <span class="p">:</span> <span class="n">maping</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">o</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">maping</span></div>
+    
+<div class="viewcode-block" id="DataFrame.reverse_column_from_numerical_values"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.reverse_column_from_numerical_values">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_column_from_numerical_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">maping</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trasform_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">o</span> <span class="p">:</span> <span class="n">maping</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">o</span><span class="p">)])</span></div>
+
+<div class="viewcode-block" id="DataFrame.count_occurence_of_row_as_count_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.count_occurence_of_row_as_count_column">[docs]</a>    <span class="k">def</span> <span class="nf">count_occurence_of_row_as_count_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the occurrence of each row in the dataframe as a new column</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            column_name (str): name of destination column</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">new_column_name</span> <span class="o">=</span> <span class="s1">&#39;count&#39;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">new_column_name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trasform_column</span><span class="p">(</span><span class="n">new_column_name</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">x</span><span class="p">))</span></div>
+    
+<div class="viewcode-block" id="DataFrame.get_count_number_of_all_words"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_count_number_of_all_words">[docs]</a>    <span class="k">def</span> <span class="nf">get_count_number_of_all_words</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">apply_fun_to_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="DataFrame.get_count_occurrence_of_a_value"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_count_occurrence_of_a_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_count_occurrence_of_a_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Count the occurrence of a value in a given column</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            column_name (str): name of destination column</span>
+<span class="sd">            value (any): The value to be counted</span>
+<span class="sd">            case_sensitive (bool, optional): in case of textual data take in concidiration the case sensitive. Defaults to True.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            int: the occurrence number</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">case_sensitive</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">apply_fun_to_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">apply_fun_to_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="o">.</span><span class="n">lower</span><span class="p">,</span> <span class="n">x</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)))</span><span class="o">.</span><span class="n">count</span><span class="p">(</span><span class="n">value</span><span class="p">))</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column_name</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DataFrame.count_true_decision_function_rows"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.count_true_decision_function_rows">[docs]</a>    <span class="k">def</span> <span class="nf">count_true_decision_function_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">decision_function</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_dataframe</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">decision_function</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span></div>
+        
+<div class="viewcode-block" id="DataFrame.show_wordcloud"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.show_wordcloud">[docs]</a>    <span class="k">def</span> <span class="nf">show_wordcloud</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build the WordCloud of a textual column</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            column_name (str): name of destination column</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">wordcloud</span> <span class="o">=</span> <span class="n">WordCloud</span><span class="p">(</span>
+            <span class="n">background_color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>
+            <span class="n">max_words</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
+            <span class="n">max_font_size</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span>
+            <span class="n">scale</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">wordcloud</span> <span class="o">=</span> <span class="n">wordcloud</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column_as_joined_text</span><span class="p">(</span><span class="n">column_name</span><span class="p">))</span>
+        <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">wordcloud</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="DataFrame.reindex_dataframe"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.reindex_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">reindex_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">index_as_liste</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">index_as_column_name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">index_as_liste</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_index</span> <span class="o">=</span> <span class="n">new_index</span> <span class="o">=</span> <span class="n">index_as_liste</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">new_index</span>
+        <span class="k">if</span> <span class="n">index_as_column_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">set_index</span><span class="p">(</span><span class="n">index_as_column_name</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">index_as_column_name</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">index_as_liste</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">new_index</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">new_index</span></div>
+    
+<div class="viewcode-block" id="DataFrame.get_columns_names"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_columns_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_columns_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">header</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">header</span> </div>
+    
+<div class="viewcode-block" id="DataFrame.export"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.export">[docs]</a>    <span class="k">def</span> <span class="nf">export</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">destination_path</span><span class="o">=</span><span class="s1">&#39;data/json_dataframe.csv&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;csv&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span> <span class="o">==</span> <span class="s1">&#39;json&#39;</span><span class="p">:</span>
+            <span class="n">destination_path</span><span class="o">=</span><span class="s1">&#39;data/json_dataframe.json&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_json</span><span class="p">(</span><span class="n">destination_path</span><span class="p">)</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">destination_path</span><span class="p">)</span></div>
+        
+<div class="viewcode-block" id="DataFrame.sample"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.sample">[docs]</a>    <span class="k">def</span> <span class="nf">sample</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">frac</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">frac</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">frac</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.show"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.show">[docs]</a>    <span class="k">def</span> <span class="nf">show</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">number_of_row</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">number_of_row</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">())</span>
+        <span class="k">elif</span> <span class="n">number_of_row</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">number_of_row</span><span class="p">))</span> 
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="n">number_of_row</span><span class="p">)</span> </div>
+
+<div class="viewcode-block" id="DataFrame.get_sliced_dataframe"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.get_sliced_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">get_sliced_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">line_tuple</span><span class="p">,</span> <span class="n">columns_tuple</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">line_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span><span class="n">line_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">columns_tuple</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span> <span class="n">columns_tuple</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span></div>
+
+<div class="viewcode-block" id="DataFrame.eliminate_outliers_quantile"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.eliminate_outliers_quantile">[docs]</a>    <span class="k">def</span> <span class="nf">eliminate_outliers_quantile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">min_quantile</span><span class="p">,</span> <span class="n">max_quantile</span><span class="p">):</span>
+        <span class="n">min_q</span><span class="p">,</span> <span class="n">max_q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">min_quantile</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">quantile</span><span class="p">(</span><span class="n">max_quantile</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_dataframe</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">outliers_decision_function</span><span class="p">,</span> <span class="n">min_q</span><span class="p">,</span> <span class="n">max_q</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.scale_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.scale_column">[docs]</a>    <span class="k">def</span> <span class="nf">scale_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="n">max_column</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">describe</span><span class="p">()[</span><span class="s1">&#39;max&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trasform_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">scale_trasform_fun</span><span class="p">,</span> <span class="n">max_column</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.drop_duplicated_rows"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.drop_duplicated_rows">[docs]</a>    <span class="k">def</span> <span class="nf">drop_duplicated_rows</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">drop_duplicates</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="n">column</span><span class="p">,</span> <span class="n">keep</span><span class="o">=</span><span class="s1">&#39;first&#39;</span><span class="p">))</span></div>
+        
+<div class="viewcode-block" id="DataFrame.plot_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.plot_column">[docs]</a>    <span class="k">def</span> <span class="nf">plot_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="DataFrame.plot_dataframe"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.plot_dataframe">[docs]</a>    <span class="k">def</span> <span class="nf">plot_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span></div>
+        
+<div class="viewcode-block" id="DataFrame.to_numpy"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.to_numpy">[docs]</a>    <span class="k">def</span> <span class="nf">to_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">values</span></div>
+    
+<div class="viewcode-block" id="DataFrame.info"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.info">[docs]</a>    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="DataFrame.train_test_split"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.train_test_split">[docs]</a>    <span class="k">def</span> <span class="nf">train_test_split</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">train_percent</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
+        <span class="n">seuil</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">train_percent</span><span class="p">)</span>
+        <span class="n">train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">seuil</span><span class="p">]</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dataframe</span><span class="p">()</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">seuil</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span></div>
+    
+<div class="viewcode-block" id="DataFrame.train_test_split_column"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.train_test_split_column">[docs]</a>    <span class="k">def</span> <span class="nf">train_test_split_column</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">train_percent</span><span class="o">=</span><span class="mf">0.8</span><span class="p">):</span>
+        <span class="n">seuil</span> <span class="o">=</span> <span class="n">ceil</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">train_percent</span><span class="p">)</span>
+        <span class="n">train</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="n">seuil</span><span class="p">]</span>
+        <span class="n">test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">seuil</span><span class="p">:]</span>
+        <span class="k">return</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span></div>
+        
+<div class="viewcode-block" id="DataFrame.column_to_date"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.column_to_date">[docs]</a>    <span class="k">def</span> <span class="nf">column_to_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)</span><span class="o">.</span><span class="n">dt</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="nb">format</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_column</span><span class="p">(</span><span class="n">column</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">column</span><span class="p">)))</span></div>
+        
+<div class="viewcode-block" id="DataFrame.resample_timeseries"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.resample_timeseries">[docs]</a>    <span class="k">def</span> <span class="nf">resample_timeseries</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">frequency</span><span class="o">=</span><span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="n">agg</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">agg</span> <span class="o">==</span> <span class="s1">&#39;sum&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">frequency</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">agg</span> <span class="o">==</span> <span class="s1">&#39;mean&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__dataframe</span><span class="o">.</span><span class="n">resample</span><span class="p">(</span><span class="n">frequency</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+        <span class="k">return</span> <span class="mi">0</span></div>
+        
+<div class="viewcode-block" id="DataFrame.to_time_series"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.to_time_series">[docs]</a>    <span class="k">def</span> <span class="nf">to_time_series</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">date_column_name</span><span class="p">,</span> <span class="n">value_column_name</span><span class="p">,</span> <span class="n">date_format</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">one_row</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert a dataframe to a time series</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            date_column_name (str): The column containing the date</span>
+<span class="sd">            value_column (str): The column containing values</span>
+<span class="sd">            date_format (str, optional): date pattern. Defaults to &#39;%Y-%m-%d&#39;.</span>
+<span class="sd">            window_size (int, optional): length of the window. Defaults to 2.</span>
+<span class="sd">            one_row (bool, optional): [description]. Defaults to False.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            data generator: generated data</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">column_to_date</span><span class="p">(</span><span class="n">date_column_name</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="n">date_format</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reindex_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_column</span><span class="p">(</span><span class="n">date_column_name</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_columns</span><span class="p">(</span><span class="n">value_column_name</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">one_row</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="c1">#dataframa.asfreq(&#39;d&#39;) # h hourly w weekly d normal daily b business day  m monthly a annualy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_generator</span><span class="p">(</span><span class="n">SG</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_min_max_scaled_dataframe</span><span class="p">(),</span>
+                                                <span class="bp">self</span><span class="o">.</span><span class="n">get_min_max_scaled_dataframe</span><span class="p">(),</span>
+                                                <span class="n">length</span><span class="o">=</span><span class="n">window_size</span><span class="p">,</span>
+                                                <span class="n">batch_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,))</span>
+            
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_generator</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="DataFrame.load_dataset"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.load_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">load_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="s1">&#39;iris&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        boston: Load and return the boston house-prices dataset (regression)</span>
+<span class="sd">        iris: Load and return the iris dataset (classification).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;boston&#39;</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">load_boston</span><span class="p">()</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+            <span class="n">features_names</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">feature_names</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="s1">&#39;matrix&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rename_columns</span><span class="p">(</span><span class="n">features_names</span><span class="p">,</span> <span class="n">all_columns</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;house_price&#39;</span><span class="p">)</span>
+            
+        <span class="k">elif</span> <span class="n">dataset</span> <span class="o">==</span> <span class="s1">&#39;iris&#39;</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">load_iris</span><span class="p">(</span><span class="n">as_frame</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">target</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_dataframe</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_column</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="s1">&#39;target&#39;</span><span class="p">)</span>            </div>
+        
+<div class="viewcode-block" id="DataFrame.outliers_decision_function"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.outliers_decision_function">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">outliers_decision_function</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">min_quantile</span><span class="p">,</span> <span class="n">max_quantile</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">min_quantile</span> <span class="o">&lt;</span> <span class="n">o</span> <span class="o">&lt;</span> <span class="n">max_quantile</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+    
+<div class="viewcode-block" id="DataFrame.generate_datetime_range"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.generate_datetime_range">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">generate_datetime_range</span><span class="p">(</span><span class="n">starting_datetime</span><span class="o">=</span><span class="s1">&#39;2013-01-01&#39;</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="mi">365</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="s1">&#39;1H&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">date_range</span><span class="p">(</span><span class="n">starting_datetime</span><span class="p">,</span> <span class="n">periods</span><span class="o">=</span><span class="n">periods</span><span class="p">,</span> <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataFrame.scale_trasform_fun"><a class="viewcode-back" href="../index.html#dataframe.DataFrame.scale_trasform_fun">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">scale_trasform_fun</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="n">max_column</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">o</span> <span class="o">/</span> <span class="n">max_column</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EL HACHIMI CHOUAIB.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

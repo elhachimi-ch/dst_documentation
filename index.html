@@ -1,1 +1,1592 @@
-DST documentation
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome to Data Science Toolkit’s documentation! &mdash; Data Science Toolkit 1.0.0 documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> Data Science Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"><ul>
+<li><a class="reference internal" href="#">Welcome to Data Science Toolkit’s documentation!</a></li>
+<li><a class="reference internal" href="#dst-package">dst package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-dataframe">dst.dataframe module</a></li>
+<li><a class="reference internal" href="#module-model">dst.model module</a></li>
+<li><a class="reference internal" href="#module-chart">dst.chart module</a></li>
+<li><a class="reference internal" href="#module-vectorizer">dst.vectorizer module</a></li>
+<li><a class="reference internal" href="#module-imagefactory">dst.imagefactory module</a></li>
+<li><a class="reference internal" href="#dst-gis-module">dst.gis module</a></li>
+<li><a class="reference internal" href="#module-lib">dst.lib module</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+</div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">Data Science Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li>Welcome to Data Science Toolkit’s documentation!</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="section" id="welcome-to-data-science-toolkit-s-documentation">
+<h1>Welcome to Data Science Toolkit’s documentation!<a class="headerlink" href="#welcome-to-data-science-toolkit-s-documentation" title="Permalink to this headline"></a></h1>
+</div>
+<div class="section" id="dst-package">
+<h1>dst package<a class="headerlink" href="#dst-package" title="Permalink to this headline"></a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="module-dataframe">
+<span id="dst-dataframe-module"></span><h2>dst.dataframe module<a class="headerlink" href="#module-dataframe" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dataframe.DataFrame">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dataframe.</span></span><span class="sig-name descname"><span class="pre">DataFrame</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns_names_as_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_types_in_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_index</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_empty_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sheet_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Sheet1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>DataFrame class for dealing with exploratry data analysis and data preprocessing</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.add_column">
+<span class="sig-name descname"><span class="pre">add_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.add_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.add_column" title="Permalink to this definition"></a></dt>
+<dd><p>add a new column to the dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>column</strong> (<em>Series</em><em>, </em><em>ndarray</em><em> or </em><em>a list</em>) – column to be added</p></li>
+<li><p><strong>column_name</strong> (<em>str</em>) – name of new added column</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.add_row">
+<span class="sig-name descname"><span class="pre">add_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row_as_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.add_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.add_row" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.add_time_serie_row">
+<span class="sig-name descname"><span class="pre">add_time_serie_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%Y'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.add_time_serie_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.add_time_serie_row" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date_column</strong> (<em>str</em>) – The column containing the date</p></li>
+<li><p><strong>value_column</strong> (<em>str</em>) – The column containing values of the time series</p></li>
+<li><p><strong>value</strong> (<em>[</em><em>type</em><em>]</em>) – new value to add</p></li>
+<li><p><strong>date_format</strong> (<em>str</em><em>, </em><em>optional</em>) – The RegEx patern of date format. Defaults to ‘%Y’.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.append_dataframe">
+<span class="sig-name descname"><span class="pre">append_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.append_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.append_dataframe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.apply_fun_to_column">
+<span class="sig-name descname"><span class="pre">apply_fun_to_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">func</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.apply_fun_to_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.apply_fun_to_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.check_decision_function_on_column">
+<span class="sig-name descname"><span class="pre">check_decision_function_on_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decision_func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.check_decision_function_on_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.check_decision_function_on_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.check_duplicated_in_column">
+<span class="sig-name descname"><span class="pre">check_duplicated_in_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.check_duplicated_in_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.check_duplicated_in_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.check_duplicated_rows">
+<span class="sig-name descname"><span class="pre">check_duplicated_rows</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.check_duplicated_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.check_duplicated_rows" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.check_missed_data">
+<span class="sig-name descname"><span class="pre">check_missed_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.check_missed_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.check_missed_data" title="Permalink to this definition"></a></dt>
+<dd><p>Retrning statistics about missing data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column</strong> (<em>str</em><em>, </em><em>optional</em>) – column name to check if None take all column in concidiration. Defaults to None.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.column_to_date">
+<span class="sig-name descname"><span class="pre">column_to_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%Y-%m-%d</span> <span class="pre">%H:%M'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.column_to_date"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.column_to_date" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.column_to_min_max_scale">
+<span class="sig-name descname"><span class="pre">column_to_min_max_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.column_to_min_max_scale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.column_to_min_max_scale" title="Permalink to this definition"></a></dt>
+<dd><p>Apply min/max scale to a column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column_name</strong> (<em>str</em>) – name of the column to scale</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>new scaled column</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>series</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.column_to_numerical_values">
+<span class="sig-name descname"><span class="pre">column_to_numerical_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.column_to_numerical_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.column_to_numerical_values" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.column_to_standard_scale">
+<span class="sig-name descname"><span class="pre">column_to_standard_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.column_to_standard_scale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.column_to_standard_scale" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.contains">
+<span class="sig-name descname"><span class="pre">contains</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.contains"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.contains" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.convert_column_type">
+<span class="sig-name descname"><span class="pre">convert_column_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.convert_column_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.convert_column_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.count_occurence_of_each_row">
+<span class="sig-name descname"><span class="pre">count_occurence_of_each_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.count_occurence_of_each_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.count_occurence_of_each_row" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.count_occurence_of_row_as_count_column">
+<span class="sig-name descname"><span class="pre">count_occurence_of_row_as_count_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.count_occurence_of_row_as_count_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.count_occurence_of_row_as_count_column" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the occurrence of each row in the dataframe as a new column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column_name</strong> (<em>str</em>) – name of destination column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.count_true_decision_function_rows">
+<span class="sig-name descname"><span class="pre">count_true_decision_function_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decision_function</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.count_true_decision_function_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.count_true_decision_function_rows" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.dataframe_to_min_max_scale">
+<span class="sig-name descname"><span class="pre">dataframe_to_min_max_scale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.dataframe_to_min_max_scale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.dataframe_to_min_max_scale" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.describe">
+<span class="sig-name descname"><span class="pre">describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.describe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.describe" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – if True printing the dataframe in console. Defaults to True.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.drop_column">
+<span class="sig-name descname"><span class="pre">drop_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.drop_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.drop_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.drop_columns">
+<span class="sig-name descname"><span class="pre">drop_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns_names_as_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.drop_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.drop_columns" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.drop_duplicated_rows">
+<span class="sig-name descname"><span class="pre">drop_duplicated_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.drop_duplicated_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.drop_duplicated_rows" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.drop_index">
+<span class="sig-name descname"><span class="pre">drop_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.drop_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.drop_index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.eliminate_outliers_neighbors">
+<span class="sig-name descname"><span class="pre">eliminate_outliers_neighbors</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_neighbors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contamination</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.eliminate_outliers_neighbors"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.eliminate_outliers_neighbors" title="Permalink to this definition"></a></dt>
+<dd><p>Delete outliers from the dataframe based on number of neighbors</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_neighbors</strong> (<em>int</em><em>, </em><em>optional</em>) – . Defaults to 20.</p></li>
+<li><p><strong>contamination</strong> (<em>float</em><em>, </em><em>optional</em>) – . Defaults to .05.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.eliminate_outliers_quantile">
+<span class="sig-name descname"><span class="pre">eliminate_outliers_quantile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_quantile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_quantile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.eliminate_outliers_quantile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.eliminate_outliers_quantile" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.export">
+<span class="sig-name descname"><span class="pre">export</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">destination_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/json_dataframe.csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.export"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.export" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.filter_dataframe">
+<span class="sig-name descname"><span class="pre">filter_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decision_function</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">in_place</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.filter_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.filter_dataframe" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>column_name</strong> (<em>str</em>) – name of the column to filter</p></li>
+<li><p><strong>decision_function</strong> (<em>function</em>) – function that take in parameter a row and check a condition upon it</p></li>
+<li><p><strong>in_place</strong> (<em>bool</em><em>, </em><em>optional</em>) – if True apply the decision function to inner dataframe. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>filtred dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.generate_datetime_range">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">generate_datetime_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">starting_datetime</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'2013-01-01'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">periods</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">365</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'1H'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.generate_datetime_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.generate_datetime_range" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_centre_reduite">
+<span class="sig-name descname"><span class="pre">get_centre_reduite</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_centre_reduite"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_centre_reduite" title="Permalink to this definition"></a></dt>
+<dd><p>Standar scaler</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>scaled dataframe</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>dataframe</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_column">
+<span class="sig-name descname"><span class="pre">get_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_column_as_joined_text">
+<span class="sig-name descname"><span class="pre">get_column_as_joined_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_column_as_joined_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_column_as_joined_text" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_column_as_list">
+<span class="sig-name descname"><span class="pre">get_column_as_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_column_as_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_column_as_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_columns_names">
+<span class="sig-name descname"><span class="pre">get_columns_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_columns_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_columns_names" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_count_number_of_all_words">
+<span class="sig-name descname"><span class="pre">get_count_number_of_all_words</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_count_number_of_all_words"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_count_number_of_all_words" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_count_occurrence_of_a_value">
+<span class="sig-name descname"><span class="pre">get_count_occurrence_of_a_value</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensitive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_count_occurrence_of_a_value"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_count_occurrence_of_a_value" title="Permalink to this definition"></a></dt>
+<dd><p>Count the occurrence of a value in a given column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>column_name</strong> (<em>str</em>) – name of destination column</p></li>
+<li><p><strong>value</strong> (<em>any</em>) – The value to be counted</p></li>
+<li><p><strong>case_sensitive</strong> (<em>bool</em><em>, </em><em>optional</em>) – in case of textual data take in concidiration the case sensitive. Defaults to True.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the occurrence number</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_data_types">
+<span class="sig-name descname"><span class="pre">get_data_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_data_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_data_types" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>show</strong> (<em>bool</em><em>, </em><em>optional</em>) – if True printing the dataframe in console. Defaults to True.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a list of data types of all columns in the dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_dataframe">
+<span class="sig-name descname"><span class="pre">get_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_dataframe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_dataframe_as_sparse_matrix">
+<span class="sig-name descname"><span class="pre">get_dataframe_as_sparse_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_dataframe_as_sparse_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_dataframe_as_sparse_matrix" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_dataframe_from_dic_list">
+<span class="sig-name descname"><span class="pre">get_dataframe_from_dic_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dict_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_dataframe_from_dic_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_dataframe_from_dic_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_distinct_values_as_list">
+<span class="sig-name descname"><span class="pre">get_distinct_values_as_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_distinct_values_as_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_distinct_values_as_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_generator">
+<span class="sig-name descname"><span class="pre">get_generator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_generator" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>return the data generator build using the dataframe</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>(generator)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_index">
+<span class="sig-name descname"><span class="pre">get_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_inverse_transform">
+<span class="sig-name descname"><span class="pre">get_inverse_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scaled_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_inverse_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_inverse_transform" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_last_window_for_time_serie_as_list">
+<span class="sig-name descname"><span class="pre">get_last_window_for_time_serie_as_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_last_window_for_time_serie_as_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_last_window_for_time_serie_as_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_lines_columns">
+<span class="sig-name descname"><span class="pre">get_lines_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_lines_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_lines_columns" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_min_max_scaled_columns">
+<span class="sig-name descname"><span class="pre">get_min_max_scaled_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns_names_as_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_min_max_scaled_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_min_max_scaled_columns" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_min_max_scaled_dataframe">
+<span class="sig-name descname"><span class="pre">get_min_max_scaled_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_min_max_scaled_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_min_max_scaled_dataframe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_n_rows_as_dataframe">
+<span class="sig-name descname"><span class="pre">get_n_rows_as_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_of_row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_n_rows_as_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_n_rows_as_dataframe" title="Permalink to this definition"></a></dt>
+<dd><p>return n rows as new dataframe: give a negative value if you want begin from last row</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>number_of_row</strong> (<em>int</em><em>, </em><em>optional</em>) – Defaults to 10.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>the new dataframe</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(dataframe)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_pca">
+<span class="sig-name descname"><span class="pre">get_pca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_pca"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_pca" title="Permalink to this definition"></a></dt>
+<dd><p>Apply PCA method to the dataframe</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>new_dim</strong> (<em>int</em>) – dimensions of new dataframe i.e number of features</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>[description]</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>[type]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_row">
+<span class="sig-name descname"><span class="pre">get_row</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row_index</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_row"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_row" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_shape">
+<span class="sig-name descname"><span class="pre">get_shape</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_shape" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_sliced_dataframe">
+<span class="sig-name descname"><span class="pre">get_sliced_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line_tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns_tuple</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_sliced_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_sliced_dataframe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.get_term_doc_matrix_as_df">
+<span class="sig-name descname"><span class="pre">get_term_doc_matrix_as_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectorizer_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'count'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.get_term_doc_matrix_as_df"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.get_term_doc_matrix_as_df" title="Permalink to this definition"></a></dt>
+<dd><p>Build a term matrix document from a text column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>vectorizer_type</strong> (<em>str</em><em>, </em><em>optional</em>) – weighing scheme to use. Defaults to ‘count’.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.group_by">
+<span class="sig-name descname"><span class="pre">group_by</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.group_by"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.group_by" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.info">
+<span class="sig-name descname"><span class="pre">info</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.info" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.intersection">
+<span class="sig-name descname"><span class="pre">intersection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.intersection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.intersection" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.k_get_min_max_scaled_dataframe">
+<span class="sig-name descname"><span class="pre">k_get_min_max_scaled_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.k_get_min_max_scaled_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.k_get_min_max_scaled_dataframe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.keep_columns">
+<span class="sig-name descname"><span class="pre">keep_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns_names_as_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.keep_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.keep_columns" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.left_join">
+<span class="sig-name descname"><span class="pre">left_join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.left_join"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.left_join" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.load_dataset">
+<span class="sig-name descname"><span class="pre">load_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'iris'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.load_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.load_dataset" title="Permalink to this definition"></a></dt>
+<dd><p>boston: Load and return the boston house-prices dataset (regression)
+iris: Load and return the iris dataset (classification).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.map_function">
+<span class="sig-name descname"><span class="pre">map_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.map_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.map_function" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.missing_data">
+<span class="sig-name descname"><span class="pre">missing_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filling_dict_colmn_val</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_row_if_nan_in_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.missing_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.missing_data" title="Permalink to this definition"></a></dt>
+<dd><p>Filling missing data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filling_dict_colmn_val</strong> (<em>dict</em><em>, </em><em>optional</em>) – dictionary of missing values mapping. Defaults to None.</p></li>
+<li><p><strong>drop_row_if_nan_in_column</strong> (<em>str</em><em>, </em><em>optional</em>) – delete the entire row if NaN is found in this column. Defaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.outliers_decision_function">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">outliers_decision_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_quantile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_quantile</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.outliers_decision_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.outliers_decision_function" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.pivot">
+<span class="sig-name descname"><span class="pre">pivot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_columns_as_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_columns_as_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_of_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg_func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.pivot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.pivot" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.plot_column">
+<span class="sig-name descname"><span class="pre">plot_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.plot_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.plot_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.plot_dataframe">
+<span class="sig-name descname"><span class="pre">plot_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.plot_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.plot_dataframe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.reindex_dataframe">
+<span class="sig-name descname"><span class="pre">reindex_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index_as_liste</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_as_column_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.reindex_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.reindex_dataframe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.rename_columns">
+<span class="sig-name descname"><span class="pre">rename_columns</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_dict_or_all_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_columns</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.rename_columns"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.rename_columns" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>column_dict_or_all_list</strong> (<em>dictionary</em><em> or </em><em>list</em>) – dictionary of new column names or a list of all columns names</p></li>
+<li><p><strong>all_columns</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description]. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.replace_column">
+<span class="sig-name descname"><span class="pre">replace_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_time</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">case_sensetivity</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.replace_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.replace_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.replace_num_data">
+<span class="sig-name descname"><span class="pre">replace_num_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">val</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.replace_num_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.replace_num_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.request">
+<span class="sig-name descname"><span class="pre">request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">select</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.request"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.request" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.resample_timeseries">
+<span class="sig-name descname"><span class="pre">resample_timeseries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frequency</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.resample_timeseries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.resample_timeseries" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.reset_index">
+<span class="sig-name descname"><span class="pre">reset_index</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.reset_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.reset_index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.reverse_column_from_numerical_values">
+<span class="sig-name descname"><span class="pre">reverse_column_from_numerical_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maping</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.reverse_column_from_numerical_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.reverse_column_from_numerical_values" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.right_join">
+<span class="sig-name descname"><span class="pre">right_join</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.right_join"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.right_join" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.s__column_to_min_max_scale">
+<span class="sig-name descname"><span class="pre">s__column_to_min_max_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.s__column_to_min_max_scale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.s__column_to_min_max_scale" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.sample">
+<span class="sig-name descname"><span class="pre">sample</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frac</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.sample"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.sample" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.scale_column">
+<span class="sig-name descname"><span class="pre">scale_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.scale_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.scale_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.scale_trasform_fun">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">scale_trasform_fun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.scale_trasform_fun"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.scale_trasform_fun" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.set_column">
+<span class="sig-name descname"><span class="pre">set_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.set_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.set_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.set_column_type">
+<span class="sig-name descname"><span class="pre">set_column_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_type</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.set_column_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.set_column_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.set_data_types">
+<span class="sig-name descname"><span class="pre">set_data_types</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_dict_types</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.set_data_types"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.set_data_types" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.set_dataframe">
+<span class="sig-name descname"><span class="pre">set_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'df'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.set_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.set_dataframe" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.set_dataframe_index">
+<span class="sig-name descname"><span class="pre">set_dataframe_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">liste_indices</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.set_dataframe_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.set_dataframe_index" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.set_generator">
+<span class="sig-name descname"><span class="pre">set_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.set_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.set_generator" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.set_same_type">
+<span class="sig-name descname"><span class="pre">set_same_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">same_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float64'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.set_same_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.set_same_type" title="Permalink to this definition"></a></dt>
+<dd><p>example of types: float64, object</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">number_of_row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.show" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.show_wordcloud">
+<span class="sig-name descname"><span class="pre">show_wordcloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.show_wordcloud"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.show_wordcloud" title="Permalink to this definition"></a></dt>
+<dd><p>Build the WordCloud of a textual column</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>column_name</strong> (<em>str</em>) – name of destination column</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.sort">
+<span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">by_columns_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascending</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.sort"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.sort" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.sub">
+<span class="sig-name descname"><span class="pre">sub</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pattern</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replacement</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.sub"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.sub" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.to_lower_column">
+<span class="sig-name descname"><span class="pre">to_lower_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.to_lower_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.to_lower_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.to_no_accent_column">
+<span class="sig-name descname"><span class="pre">to_no_accent_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.to_no_accent_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.to_no_accent_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.to_numpy">
+<span class="sig-name descname"><span class="pre">to_numpy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.to_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.to_numpy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.to_time_series">
+<span class="sig-name descname"><span class="pre">to_time_series</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">date_column_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value_column_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date_format</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'%Y-%m-%d'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">window_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">one_row</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.to_time_series"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.to_time_series" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a dataframe to a time series</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>date_column_name</strong> (<em>str</em>) – The column containing the date</p></li>
+<li><p><strong>value_column</strong> (<em>str</em>) – The column containing values</p></li>
+<li><p><strong>date_format</strong> (<em>str</em><em>, </em><em>optional</em>) – date pattern. Defaults to ‘%Y-%m-%d’.</p></li>
+<li><p><strong>window_size</strong> (<em>int</em><em>, </em><em>optional</em>) – length of the window. Defaults to 2.</p></li>
+<li><p><strong>one_row</strong> (<em>bool</em><em>, </em><em>optional</em>) – [description]. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>generated data</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>data generator</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.to_upper_column">
+<span class="sig-name descname"><span class="pre">to_upper_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.to_upper_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.to_upper_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.train_test_split">
+<span class="sig-name descname"><span class="pre">train_test_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">train_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.train_test_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.train_test_split" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.train_test_split_column">
+<span class="sig-name descname"><span class="pre">train_test_split_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.train_test_split_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.train_test_split_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.transform_column">
+<span class="sig-name descname"><span class="pre">transform_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_to_trsform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_src</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fun_de_trasformation</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.transform_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.transform_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.union">
+<span class="sig-name descname"><span class="pre">union</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.union"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.union" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.write_check_duplicated_column_result_in_file">
+<span class="sig-name descname"><span class="pre">write_check_duplicated_column_result_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/latin_comments.csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.write_check_duplicated_column_result_in_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.write_check_duplicated_column_result_in_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.write_column_in_file">
+<span class="sig-name descname"><span class="pre">write_column_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/out.csv'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.write_column_in_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.write_column_in_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.write_dataframe_in_file">
+<span class="sig-name descname"><span class="pre">write_dataframe_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">out_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/out.csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.write_dataframe_in_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.write_dataframe_in_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dataframe.DataFrame.write_files_grouped_by_column">
+<span class="sig-name descname"><span class="pre">write_files_grouped_by_column</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">column_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dossier</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dataframe.html#DataFrame.write_files_grouped_by_column"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#dataframe.DataFrame.write_files_grouped_by_column" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-model">
+<span id="dst-model-module"></span><h2>dst.model module<a class="headerlink" href="#module-model" title="Permalink to this headline"></a></h2>
+<p>Under MIT License by EL HACHIMI CHOUAIB</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="model.Model">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">model.</span></span><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'knn'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c_or_r_or_ts</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'c'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_percent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generator</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_percentage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.accuracy">
+<span class="sig-name descname"><span class="pre">accuracy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.accuracy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.accuracy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.add_conv_1d_layer">
+<span class="sig-name descname"><span class="pre">add_conv_1d_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_nbr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_shape_int</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'relu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">strides</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.add_conv_1d_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.add_conv_1d_layer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.add_conv_2d_layer">
+<span class="sig-name descname"><span class="pre">add_conv_2d_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filter_nbr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_shape_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(3,</span> <span class="pre">3)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'relu'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.add_conv_2d_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.add_conv_2d_layer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.add_dropout_layer">
+<span class="sig-name descname"><span class="pre">add_dropout_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rate_to_keep_output_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.add_dropout_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.add_dropout_layer" title="Permalink to this definition"></a></dt>
+<dd><p>dropout default initial value</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.add_flatten_layer">
+<span class="sig-name descname"><span class="pre">add_flatten_layer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.add_flatten_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.add_flatten_layer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.add_layer">
+<span class="sig-name descname"><span class="pre">add_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connections_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'relu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_dim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.add_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.add_layer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.add_lstm_layer">
+<span class="sig-name descname"><span class="pre">add_lstm_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">connections_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">activation_function</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'relu'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.add_lstm_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.add_lstm_layer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.add_pooling_1d_layer">
+<span class="sig-name descname"><span class="pre">add_pooling_1d_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool_size_int</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.add_pooling_1d_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.add_pooling_1d_layer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.add_pooling_2d_layer">
+<span class="sig-name descname"><span class="pre">add_pooling_2d_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pool_size_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(2,</span> <span class="pre">2)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.add_pooling_2d_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.add_pooling_2d_layer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.add_reshape_layer">
+<span class="sig-name descname"><span class="pre">add_reshape_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_dim</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.add_reshape_layer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.add_reshape_layer" title="Permalink to this definition"></a></dt>
+<dd><p>for 1dcnn and 2dcnn use this layer as first layer</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.boost_model">
+<span class="sig-name descname"><span class="pre">boost_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.boost_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.boost_model" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.classification_report">
+<span class="sig-name descname"><span class="pre">classification_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_predicted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.classification_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.classification_report" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate classification metrics by passing y_test and y_predicted</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_test</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – column of reel values. Defaults to None.</p></li>
+<li><p><strong>y_predicted</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – column of predicted values. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dictionary of classification metrics</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.cross_validation">
+<span class="sig-name descname"><span class="pre">cross_validation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.cross_validation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.cross_validation" title="Permalink to this definition"></a></dt>
+<dd><p>perform a cross validation for the trained model
+for more metrics: <a class="reference external" href="https://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter">https://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter</a>
+:param k: number of folds
+:type k: in</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.f1_score">
+<span class="sig-name descname"><span class="pre">f1_score</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.f1_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.f1_score" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.forcast_next_step">
+<span class="sig-name descname"><span class="pre">forcast_next_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">window</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.forcast_next_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.forcast_next_step" title="Permalink to this definition"></a></dt>
+<dd><p>Forecasting of one step in a time series using the trained model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>window</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>forecasted value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>reel</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.get_features_importance">
+<span class="sig-name descname"><span class="pre">get_features_importance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.get_features_importance"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.get_features_importance" title="Permalink to this definition"></a></dt>
+<dd><p>calculate the importance vector as a Feature selection task onn te data_x and show the result as bar chart</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>feature importance vector</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.get_generator">
+<span class="sig-name descname"><span class="pre">get_generator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.get_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.get_generator" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.get_model">
+<span class="sig-name descname"><span class="pre">get_model</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.get_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.get_model" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.load_model">
+<span class="sig-name descname"><span class="pre">load_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.load_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.load_model" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.precision">
+<span class="sig-name descname"><span class="pre">precision</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binary_classification</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.precision"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.precision" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.predict">
+<span class="sig-name descname"><span class="pre">predict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_to_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.predict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.predict" title="Permalink to this definition"></a></dt>
+<dd><p>Make a new prediction using the trained model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x_to_pred</strong> (<em>matrix</em>) – list of rows or instances to predict</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>predicted value</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>reel</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.predict_proba">
+<span class="sig-name descname"><span class="pre">predict_proba</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_to_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.predict_proba"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.predict_proba" title="Permalink to this definition"></a></dt>
+<dd><p>Predict a probability distribution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>x_to_pred</strong> (<em>matrix</em>) – list of rows or instances to predict</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>an array of probability distributions</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.predict_with_boosted_model">
+<span class="sig-name descname"><span class="pre">predict_with_boosted_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_to_pred</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.predict_with_boosted_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.predict_with_boosted_model" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.recall">
+<span class="sig-name descname"><span class="pre">recall</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.recall"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.recall" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.regression_report">
+<span class="sig-name descname"><span class="pre">regression_report</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_predicted</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.regression_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.regression_report" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate regression metrics by passing y_test and y_predicted</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_test</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – column of reel values. Defaults to None.</p></li>
+<li><p><strong>y_predicted</strong> (<em>[</em><em>type</em><em>]</em><em>, </em><em>optional</em>) – column of predicted values. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a dictionary of regression metrics</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>(dict)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.report">
+<span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.report" title="Permalink to this definition"></a></dt>
+<dd><p>Ploting the chart of accuracy and loss over epochs</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.roc_curve">
+<span class="sig-name descname"><span class="pre">roc_curve</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.roc_curve"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.roc_curve" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.save_model">
+<span class="sig-name descname"><span class="pre">save_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/model.data'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.save_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.save_model" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.set_generator">
+<span class="sig-name descname"><span class="pre">set_generator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generator</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.set_generator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.set_generator" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.set_model">
+<span class="sig-name descname"><span class="pre">set_model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.set_model"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.set_model" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.summary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.summary" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="model.Model.train">
+<span class="sig-name descname"><span class="pre">train</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">loss=&lt;function</span> <span class="pre">categorical_crossentropy&gt;,</span> <span class="pre">optimizer=&lt;tensorflow.python.keras.optimizer_v2.gradient_descent.SGD</span> <span class="pre">object&gt;,</span> <span class="pre">metrics_as_list=['accuracy']</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/model.html#Model.train"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#model.Model.train" title="Permalink to this definition"></a></dt>
+<dd><p>if you pass y as integers use loss=’sparse_categorical_crossentropy’
+class Adadelta: Optimizer that implements the Adadelta algorithm.
+class Adagrad: Optimizer that implements the Adagrad algorithm.
+class Adam: Optimizer that implements the Adam algorithm.
+class Adamax: Optimizer that implements the Adamax algorithm.
+class Ftrl: Optimizer that implements the FTRL algorithm.
+class Nadam: Optimizer that implements the NAdam algorithm.
+class Optimizer: Base class for Keras optimizers.
+class RMSprop: Optimizer that implements the RMSprop algorithm.
+class SGD: Gradient descent (with momentum) optimizer.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-chart">
+<span id="dst-chart-module"></span><h2>dst.chart module<a class="headerlink" href="#module-chart" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="chart.Chart">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">chart.</span></span><span class="sig-name descname"><span class="pre">Chart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column4x</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chart_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pair'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">group_by</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns_names_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotly</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chart.html#Chart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chart.Chart" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="chart.Chart.add_data_to_show">
+<span class="sig-name descname"><span class="pre">add_data_to_show</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column4hover</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column4size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chart.html#Chart.add_data_to_show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chart.Chart.add_data_to_show" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="chart.Chart.chart_type_list">
+<span class="sig-name descname"><span class="pre">chart_type_list</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['line',</span> <span class="pre">'bar',</span> <span class="pre">'box',</span> <span class="pre">'swarm',</span> <span class="pre">'strip_swarm',</span> <span class="pre">'count',</span> <span class="pre">'reg',</span> <span class="pre">'dist',</span> <span class="pre">'point',</span> <span class="pre">'pair',</span> <span class="pre">'correlation_map',</span> <span class="pre">'scatter',</span> <span class="pre">'heat_map']</span></em><a class="headerlink" href="#chart.Chart.chart_type_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chart.Chart.config">
+<span class="sig-name descname"><span class="pre">config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'X'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Y'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_limit_i</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_limit_f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_limit_i</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_limit_f</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_rotation_angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">90</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_rotation_angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">titile_font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_label_font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_label_font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">13</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chart.html#Chart.config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chart.Chart.config" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chart.Chart.plot_colored_map">
+<span class="sig-name descname"><span class="pre">plot_colored_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso_locations_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animation_frame_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Year'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'world'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hover_name_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chart.html#Chart.plot_colored_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chart.Chart.plot_colored_map" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chart.Chart.plot_on_map">
+<span class="sig-name descname"><span class="pre">plot_on_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">iso_locations_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circle_size_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">animation_frame_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hover_name_column</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'natural</span> <span class="pre">earth'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scope</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'world'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chart.html#Chart.plot_on_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chart.Chart.plot_on_map" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chart.Chart.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chart_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'output.png'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transparent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/chart.html#Chart.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chart.Chart.save" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="chart.Chart.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/chart.html#Chart.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#chart.Chart.show" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-vectorizer">
+<span id="dst-vectorizer-module"></span><h2>dst.vectorizer module<a class="headerlink" href="#module-vectorizer" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">vectorizer.</span></span><span class="sig-name descname"><span class="pre">Vectorizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vectorizer_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'count'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ngram_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(1,</span> <span class="pre">1)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">space_dimension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.get_custom_features">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_custom_features</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">e</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.get_custom_features"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.get_custom_features" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.get_docs_projections_as_sparse">
+<span class="sig-name descname"><span class="pre">get_docs_projections_as_sparse</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docs_liste</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">projection_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'normal'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.get_docs_projections_as_sparse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.get_docs_projections_as_sparse" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.get_features_names">
+<span class="sig-name descname"><span class="pre">get_features_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.get_features_names"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.get_features_names" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.get_matrix">
+<span class="sig-name descname"><span class="pre">get_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.get_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.get_matrix" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.get_reshaped_matrix">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_reshaped_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_shape_tuple</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.get_reshaped_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.get_reshaped_matrix" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.get_shape">
+<span class="sig-name descname"><span class="pre">get_shape</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.get_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.get_shape" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.get_sparse_matrix">
+<span class="sig-name descname"><span class="pre">get_sparse_matrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.get_sparse_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.get_sparse_matrix" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.get_sum_by_columns_as_list">
+<span class="sig-name descname"><span class="pre">get_sum_by_columns_as_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.get_sum_by_columns_as_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.get_sum_by_columns_as_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.get_sum_by_rows_as_list">
+<span class="sig-name descname"><span class="pre">get_sum_by_rows_as_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.get_sum_by_rows_as_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.get_sum_by_rows_as_list" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.get_vectorizer">
+<span class="sig-name descname"><span class="pre">get_vectorizer</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.get_vectorizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.get_vectorizer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.load_vectorizer">
+<span class="sig-name descname"><span class="pre">load_vectorizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectorizer_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/vectorizer.data'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.load_vectorizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.load_vectorizer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.preprocessor">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">preprocessor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.preprocessor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.preprocessor" title="Permalink to this definition"></a></dt>
+<dd><p>def my_tokenizer(s):
+return s.split()
+vectorizer = CountVectorizer(tokenizer=my_tokenizer)</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.reshape">
+<span class="sig-name descname"><span class="pre">reshape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_shpae_tuple</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.reshape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.reshape" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.reshape_images_for_cnn">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reshape_images_for_cnn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images_as_liste</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.reshape_images_for_cnn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.reshape_images_for_cnn" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.save_vectorizer">
+<span class="sig-name descname"><span class="pre">save_vectorizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vectorizer_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/vectorizer.data'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.save_vectorizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.save_vectorizer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.to_one_hot">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_one_hot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vecteur_of_categories</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.to_one_hot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.to_one_hot" title="Permalink to this definition"></a></dt>
+<dd><p>converti une colone avec des categorie mais numerique en forme One Hot Encoding exemple versicolor
+est de label 2 se transform en [0 0 1]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="vectorizer.Vectorizer.tokenizer">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tokenizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">doc</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#Vectorizer.tokenizer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.Vectorizer.tokenizer" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="vectorizer.stemming">
+<span class="sig-prename descclassname"><span class="pre">vectorizer.</span></span><span class="sig-name descname"><span class="pre">stemming</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string_in</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/vectorizer.html#stemming"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#vectorizer.stemming" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-imagefactory">
+<span id="dst-imagefactory-module"></span><h2>dst.imagefactory module<a class="headerlink" href="#module-imagefactory" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">imagefactory.</span></span><span class="sig-name descname"><span class="pre">ImageFactory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img_link</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">url</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.adaptive_treshold">
+<span class="sig-name descname"><span class="pre">adaptive_treshold</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.adaptive_treshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.adaptive_treshold" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.cercle">
+<span class="sig-name descname"><span class="pre">cercle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">centre_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rayon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cer_color_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(255,</span> <span class="pre">0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.cercle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.cercle" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.crop">
+<span class="sig-name descname"><span class="pre">crop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_left_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom_right_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(50,</span> <span class="pre">50)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.crop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.crop" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.find_contour">
+<span class="sig-name descname"><span class="pre">find_contour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seuil</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">75</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_canny</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.find_contour"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.find_contour" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.find_function">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">find_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.find_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.find_function" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.find_skeleton">
+<span class="sig-name descname"><span class="pre">find_skeleton</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.find_skeleton"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.find_skeleton" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.gaussian_blur">
+<span class="sig-name descname"><span class="pre">gaussian_blur</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">taille_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(5,</span> <span class="pre">5)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.gaussian_blur"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.gaussian_blur" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.get_bgr_layers">
+<span class="sig-name descname"><span class="pre">get_bgr_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.get_bgr_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.get_bgr_layers" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.get_contour_canny">
+<span class="sig-name descname"><span class="pre">get_contour_canny</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">auto</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seuil</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">75</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.get_contour_canny"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.get_contour_canny" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.get_histogramme">
+<span class="sig-name descname"><span class="pre">get_histogramme</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.get_histogramme"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.get_histogramme" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.get_image">
+<span class="sig-name descname"><span class="pre">get_image</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.get_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.get_image" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.get_median_blur">
+<span class="sig-name descname"><span class="pre">get_median_blur</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.get_median_blur"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.get_median_blur" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.get_shape">
+<span class="sig-name descname"><span class="pre">get_shape</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.get_shape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.get_shape" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.line">
+<span class="sig-name descname"><span class="pre">line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_a</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_b</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">255)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.line" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.merge">
+<span class="sig-name descname"><span class="pre">merge</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_link</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.merge"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.merge" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.perspective_vue_from_4_points">
+<span class="sig-name descname"><span class="pre">perspective_vue_from_4_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.perspective_vue_from_4_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.perspective_vue_from_4_points" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.rectangle">
+<span class="sig-name descname"><span class="pre">rectangle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_left_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bottom_right_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(10,</span> <span class="pre">10)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rect_color_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0,</span> <span class="pre">255)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.rectangle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.rectangle" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.reshape">
+<span class="sig-name descname"><span class="pre">reshape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_shape_tuple</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.reshape"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.reshape" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.resize">
+<span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_size_tuple</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.resize"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.resize" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.rotat_image">
+<span class="sig-name descname"><span class="pre">rotat_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.rotat_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.rotat_image" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_name_path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'image.jpg'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.save" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.scan">
+<span class="sig-name descname"><span class="pre">scan</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.scan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.scan" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.set_image">
+<span class="sig-name descname"><span class="pre">set_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.set_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.set_image" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.show" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.show_histograme">
+<span class="sig-name descname"><span class="pre">show_histograme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">rgb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.show_histograme"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.show_histograme" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.threshold">
+<span class="sig-name descname"><span class="pre">threshold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seuil</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inversed_binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.threshold" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.to_gray_scale">
+<span class="sig-name descname"><span class="pre">to_gray_scale</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.to_gray_scale"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.to_gray_scale" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.to_rgb">
+<span class="sig-name descname"><span class="pre">to_rgb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.to_rgb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.to_rgb" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="imagefactory.ImageFactory.write_text">
+<span class="sig-name descname"><span class="pre">write_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text_to_write</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_position_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_gbr_tuple</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">255,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">font_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/imagefactory.html#ImageFactory.write_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#imagefactory.ImageFactory.write_text" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="dst-gis-module">
+<h2>dst.gis module<a class="headerlink" href="#dst-gis-module" title="Permalink to this headline"></a></h2>
+</div>
+<div class="section" id="module-lib">
+<span id="dst-lib-module"></span><h2>dst.lib module<a class="headerlink" href="#module-lib" title="Permalink to this headline"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="lib.Lib">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">lib.</span></span><span class="sig-name descname"><span class="pre">Lib</span></span><a class="reference internal" href="_modules/lib.html#Lib"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Lib class is a static class that serves other components with implementations of auxiliary algorithms .</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.c_n_k">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">c_n_k</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.c_n_k"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.c_n_k" title="Permalink to this definition"></a></dt>
+<dd><p>A fast way to calculate binomial coefficients by Andrew Dalke (contrib).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n</strong> (<em>int</em>) – N</p></li>
+<li><p><strong>k</strong> (<em>int</em>) – K</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>combination of k from n</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.c_n_k_scipy">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">c_n_k_scipy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.c_n_k_scipy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.c_n_k_scipy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.check_all_elements_type">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">check_all_elements_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_to_check</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">types_tuple</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.check_all_elements_type"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.check_all_elements_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.decompsition_to_prime">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">decompsition_to_prime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">99</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.decompsition_to_prime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.decompsition_to_prime" title="Permalink to this definition"></a></dt>
+<dd><p>Decompse a number to prime numbers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>n</strong> (<em>int</em><em>, </em><em>optional</em>) – number to decompose. Defaults to 99.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>list of prime numbers and their power</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.factorial">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">factorial</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.factorial"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.factorial" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.get_mnist_as_dataframe">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_mnist_as_dataframe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.get_mnist_as_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.get_mnist_as_dataframe" title="Permalink to this definition"></a></dt>
+<dd><p>image_list = ch.get_reshaped_matrix(np.array([ch.get_reshaped_matrix(p, (1, 28 * 28)) for p in x_train]),
+(x_train.shape[0], 28 * 28))</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.is_empty_line">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_empty_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string_in</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.is_empty_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.is_empty_line" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.is_premier">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_premier</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.is_premier"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.is_premier" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.list_all_files_in_folder">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_all_files_in_folder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.list_all_files_in_folder"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.list_all_files_in_folder" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.list_to_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">list_to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">liste</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.list_to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.list_to_string" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.load_object">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.load_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.load_object" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.partie_entiere">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">partie_entiere</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.partie_entiere"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.partie_entiere" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.pgcd_iterative">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pgcd_iterative</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.pgcd_iterative"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.pgcd_iterative" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.pgcd_recursive">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">pgcd_recursive</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.pgcd_recursive"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.pgcd_recursive" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.ppmc">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ppmc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.ppmc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.ppmc" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.read_csv">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.read_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.read_csv" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.read_text_file">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">read_text_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_anti_slash</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.read_text_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.read_text_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.save_object">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">save_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">o</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">object_path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.save_object"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.save_object" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.strip_and_split">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">strip_and_split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">string_in</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.strip_and_split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.strip_and_split" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.to_upper_file_text">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">to_upper_file_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_source</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_destination</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.to_upper_file_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.to_upper_file_text" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.write_line_in_file">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_line_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/latin_comments.csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_anti_slash</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.write_line_in_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.write_line_in_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.write_list_as_csv">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_list_as_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">liste_ligne_csv</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/out.csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quotechar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'`'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.write_list_as_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.write_list_as_csv" title="Permalink to this definition"></a></dt>
+<dd><p>[summary]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>liste_ligne_csv</strong> (<em>[</em><em>type</em><em>]</em>) – [description]</p></li>
+<li><p><strong>file_name</strong> (<em>str</em><em>, </em><em>optional</em>) – [description]. Defaults to ‘data/out.csv’.</p></li>
+<li><p><strong>delimiter</strong> (<em>str</em><em>, </em><em>optional</em>) – [description]. Defaults to ‘,’.</p></li>
+<li><p><strong>quotechar</strong> (<em>str</em><em>, </em><em>optional</em>) – [description]. Defaults to ‘`’.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.write_liste_in_file">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_liste_in_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">liste</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/out.txt'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.write_liste_in_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.write_liste_in_file" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="lib.Lib.write_row_csv">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">write_row_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">row_liste</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'data/latin_comments.csv'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quotechar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'`'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/lib.html#Lib.write_row_csv"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#lib.Lib.write_row_csv" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline"></a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EL HACHIMI CHOUAIB.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

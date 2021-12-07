@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>vectorizer &mdash; Data Science Toolkit 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Data Science Toolkit
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <!-- Local TOC -->
+              <div class="local-toc"></div>
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Data Science Toolkit</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      <li>vectorizer</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for vectorizer</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction</span> <span class="k">import</span> <span class="n">DictVectorizer</span>
+<span class="kn">from</span> <span class="nn">sklearn.feature_extraction.text</span> <span class="k">import</span> <span class="n">CountVectorizer</span><span class="p">,</span> <span class="n">TfidfVectorizer</span>
+<span class="kn">import</span> <span class="nn">joblib</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.utils</span> <span class="k">import</span> <span class="n">to_categorical</span>
+<span class="kn">from</span> <span class="nn">lib</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="k">import</span> <span class="n">MinMaxScaler</span>
+<span class="kn">import</span> <span class="nn">nltk</span>
+
+<div class="viewcode-block" id="Vectorizer"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer">[docs]</a><span class="k">class</span> <span class="nc">Vectorizer</span><span class="p">:</span>
+    <span class="n">__vectorizer</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">__matrice</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vectorizer_type</span><span class="o">=</span><span class="s1">&#39;count&#39;</span><span class="p">,</span> <span class="n">ngram_tuple</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">space_dimension</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dataframe</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">docs_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">vectorizer_type</span> <span class="o">==</span> <span class="s1">&#39;count&#39;</span><span class="p">:</span>
+                <span class="n">cv</span> <span class="o">=</span> <span class="n">CountVectorizer</span><span class="p">(</span><span class="n">ngram_range</span><span class="o">=</span><span class="n">ngram_tuple</span><span class="p">)</span>
+                <span class="n">matrice</span> <span class="o">=</span> <span class="n">cv</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">docs_list</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span> <span class="o">=</span> <span class="n">cv</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__matrice</span> <span class="o">=</span> <span class="n">matrice</span>
+            <span class="k">elif</span> <span class="n">vectorizer_type</span> <span class="o">==</span> <span class="s1">&#39;tfidf&#39;</span><span class="p">:</span>
+                <span class="n">tfidfv</span> <span class="o">=</span> <span class="n">TfidfVectorizer</span><span class="p">(</span><span class="n">max_features</span><span class="o">=</span><span class="n">space_dimension</span><span class="p">,</span> <span class="n">stop_words</span><span class="o">=</span><span class="n">load_stop_words</span><span class="p">(</span><span class="s1">&#39;english&#39;</span><span class="p">),</span> <span class="n">preprocessor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">preprocessor</span><span class="p">)</span>
+                <span class="n">matrice</span> <span class="o">=</span> <span class="n">tfidfv</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">docs_list</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span> <span class="o">=</span> <span class="n">tfidfv</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__matrice</span> <span class="o">=</span> <span class="n">matrice</span>
+            <span class="k">elif</span> <span class="n">vectorizer_type</span> <span class="o">==</span> <span class="s1">&#39;custom&#39;</span><span class="p">:</span>
+                <span class="n">features</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">Vectorizer</span><span class="o">.</span><span class="n">get_custom_features</span><span class="p">)</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">features</span><span class="p">(</span><span class="n">docs_list</span><span class="p">)</span>
+                <span class="n">v</span> <span class="o">=</span> <span class="n">DictVectorizer</span><span class="p">()</span>
+                <span class="n">matrice</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span> <span class="o">=</span> <span class="n">v</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__matrice</span> <span class="o">=</span> <span class="n">matrice</span>
+            <span class="k">elif</span> <span class="n">vectorizer_type</span> <span class="o">==</span> <span class="s1">&#39;min_max&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">__matrice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">dataframe</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">pass</span>
+
+<div class="viewcode-block" id="Vectorizer.get_sparse_matrix"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.get_sparse_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">get_sparse_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__matrice</span></div>
+    
+<div class="viewcode-block" id="Vectorizer.get_matrix"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.get_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">get_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__matrice</span><span class="o">.</span><span class="n">toarray</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Vectorizer.get_vectorizer"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.get_vectorizer">[docs]</a>    <span class="k">def</span> <span class="nf">get_vectorizer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span></div>
+
+<div class="viewcode-block" id="Vectorizer.get_features_names"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.get_features_names">[docs]</a>    <span class="k">def</span> <span class="nf">get_features_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">get_feature_names</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Vectorizer.tokenizer"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.tokenizer">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">tokenizer</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">doc</span><span class="o">.</span><span class="n">split</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Vectorizer.preprocessor"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.preprocessor">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">preprocessor</span><span class="p">(</span><span class="n">doc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;def my_tokenizer(s):</span>
+<span class="sd">        return s.split()</span>
+<span class="sd">        vectorizer = CountVectorizer(tokenizer=my_tokenizer)</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">tokens</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nltk</span><span class="o">.</span><span class="n">stem</span><span class="o">.</span><span class="n">PorterStemmer</span><span class="p">()</span><span class="o">.</span><span class="n">stem</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+        <span class="k">return</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Vectorizer.get_custom_features"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.get_custom_features">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_custom_features</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+        <span class="n">e</span> <span class="o">=</span> <span class="n">e</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s1">&#39;f1&#39;</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>  <span class="c1"># First letter</span>
+            <span class="s1">&#39;f2&#39;</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">2</span><span class="p">],</span>  <span class="c1"># First 2 letters</span>
+            <span class="s1">&#39;f3&#39;</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">],</span>  <span class="c1"># First 3 letters</span>
+            <span class="s1">&#39;l1&#39;</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+            <span class="s1">&#39;l2&#39;</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">:],</span>
+            <span class="s1">&#39;l3&#39;</span><span class="p">:</span> <span class="n">e</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:],</span>
+        <span class="p">}</span></div>
+
+<div class="viewcode-block" id="Vectorizer.get_docs_projections_as_sparse"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.get_docs_projections_as_sparse">[docs]</a>    <span class="k">def</span> <span class="nf">get_docs_projections_as_sparse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">docs_liste</span><span class="p">,</span> <span class="n">projection_type</span><span class="o">=</span><span class="s1">&#39;normal&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">projection_type</span> <span class="o">!=</span> <span class="s1">&#39;normal&#39;</span><span class="p">:</span>
+            <span class="n">docs_liste</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vectorize</span><span class="p">(</span><span class="n">Vectorizer</span><span class="o">.</span><span class="n">get_custom_features</span><span class="p">)(</span><span class="n">docs_liste</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">docs_liste</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Vectorizer.save_vectorizer"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.save_vectorizer">[docs]</a>    <span class="k">def</span> <span class="nf">save_vectorizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectorizer_path</span><span class="o">=</span><span class="s1">&#39;data/vectorizer.data&#39;</span><span class="p">):</span>
+        <span class="n">out_vectorizer_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">vectorizer_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span>
+        <span class="n">joblib</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span><span class="p">,</span> <span class="n">out_vectorizer_file</span><span class="p">)</span>
+        <span class="n">out_vectorizer_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Vectorizer.load_vectorizer"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.load_vectorizer">[docs]</a>    <span class="k">def</span> <span class="nf">load_vectorizer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vectorizer_path</span><span class="o">=</span><span class="s1">&#39;data/vectorizer.data&#39;</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__vectorizer</span> <span class="o">=</span> <span class="n">joblib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="n">vectorizer_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Vectorizer.reshape"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.reshape">[docs]</a>    <span class="k">def</span> <span class="nf">reshape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_shpae_tuple</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">__matrice</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__matrice</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">new_shpae_tuple</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Vectorizer.get_sum_by_columns_as_list"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.get_sum_by_columns_as_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_sum_by_columns_as_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">count_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_sparse_matrix</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+        <span class="n">count_list</span> <span class="o">=</span> <span class="n">count_list</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">count_list</span></div>
+
+<div class="viewcode-block" id="Vectorizer.get_sum_by_rows_as_list"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.get_sum_by_rows_as_list">[docs]</a>    <span class="k">def</span> <span class="nf">get_sum_by_rows_as_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">count_list</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_sparse_matrix</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">count_list</span> <span class="o">=</span> <span class="n">count_list</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_shape</span><span class="p">()[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">count_list</span></div>
+
+<div class="viewcode-block" id="Vectorizer.get_shape"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.get_shape">[docs]</a>    <span class="k">def</span> <span class="nf">get_shape</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__matrice</span><span class="o">.</span><span class="n">shape</span></div>
+
+<div class="viewcode-block" id="Vectorizer.to_one_hot"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.to_one_hot">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">to_one_hot</span><span class="p">(</span><span class="n">vecteur_of_categories</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;converti une colone avec des categorie mais numerique en forme One Hot Encoding exemple versicolor</span>
+<span class="sd">        est de label 2 se transform en [0 0 1]&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">to_categorical</span><span class="p">(</span><span class="n">vecteur_of_categories</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Vectorizer.get_reshaped_matrix"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.get_reshaped_matrix">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_reshaped_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">new_shape_tuple</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">new_shape_tuple</span><span class="p">)</span>
+        <span class="n">new_matrix</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">new_shape_tuple</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;okkkk </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">new_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">new_matrix</span></div>
+
+<div class="viewcode-block" id="Vectorizer.reshape_images_for_cnn"><a class="viewcode-back" href="../index.html#vectorizer.Vectorizer.reshape_images_for_cnn">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">reshape_images_for_cnn</span><span class="p">(</span><span class="n">images_as_liste</span><span class="p">):</span>
+        <span class="n">images_as_liste</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">images_as_liste</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">images_as_liste</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">images_as_liste</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">)</span> \
+            <span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span></div></div>
+
+<span class="kn">from</span> <span class="nn">nltk.stem.isri</span> <span class="k">import</span> <span class="n">ISRIStemmer</span>
+
+
+<div class="viewcode-block" id="stemming"><a class="viewcode-back" href="../index.html#vectorizer.stemming">[docs]</a><span class="k">def</span> <span class="nf">stemming</span><span class="p">(</span><span class="n">string_in</span><span class="p">):</span>
+    <span class="n">tokens</span> <span class="o">=</span> <span class="n">string_in</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+    <span class="n">new_tokens</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">stemmer</span> <span class="o">=</span> <span class="n">ArabicLightStemmer</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">tokens</span><span class="p">:</span>
+        <span class="n">new_tokens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">stemmer</span><span class="o">.</span><span class="n">light_stem</span><span class="p">(</span><span class="n">p</span><span class="p">))</span>
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_tokens</span><span class="p">)</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, EL HACHIMI CHOUAIB.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
